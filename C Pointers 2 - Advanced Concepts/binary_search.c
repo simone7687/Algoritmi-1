@@ -83,16 +83,71 @@ int main()
     return 0;
 }
 
+/**
+ * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3608
+ * *key: punta al valore da cercare
+ * *base: punta alla prima cella del array in cui cercare
+ * num_elem: numero alementi del elemento puntato da base
+ * elem_size: è l'occumpazione di ogni elemento dell array
+ * *compar: è la funzione di comparazione ritorna >0 se true
+ * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3741
+ */
 void *binary_search(const void *key, const void *base, size_t num_elem, size_t elem_size, int (*compar)(const void *, const void *))
 {
     assert( key != NULL );
     assert( base != NULL );
     assert( compar != NULL );
 
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    // soluzione: https://youtu.be/cgYIOriI_Ck?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=9
+
+     const unsigned char *pcb = base;
+    size_t lo;
+    size_t hi;
+    void *ret = NULL;
+
+
+    /*
+    * Make sure the number of elements is > 0 to avoid underflow problems when
+    * initializing the 'hi' variable
+    */
+    if (num_elem == 0)
+    {
+        return NULL;
+    }
+    lo = 0;
+    hi = num_elem-1;
+    while (lo <= hi && ret == NULL)
+    {
+        size_t mid = (lo+hi)/2;
+        const void *pmid = pcb + mid*elem_size; // -> &base[mid]
+        int cmp;
+        cmp = compar(key, pmid);
+        if (cmp == 0)
+        {
+            ret = (void*) pmid; // A cast is needed because we are casting from a const pointer to a non-const pointer.
+        }
+        else if (cmp < 0)
+        {
+            hi = mid-1;
+        }
+        else if (cmp > 0)
+        {
+            lo = mid+1;
+        }
+        /*
+        * At the beginning of each iteration, it may happen that both 'lo' and
+        * 'hi' are 0, thus resulting in mid == 0.
+        * This means that when 'hi' is updated (i.e., hi=mid-1), we incur in an
+        * overflow and the function may loop infinitively.
+        * To avoid this, we check for the condition mid == 0 and when true we
+        * break the loop.
+        */
+        if (mid == 0)
+        {
+            break;
+        }
+    }
+    return ret;
 }
 
 int int_cmp(const void *pkey, const void *pelem)
