@@ -8,16 +8,31 @@
 
 static void any_copy(void *dest, const void *src, size_t n);
 
-
+/**
+ * Copia i primi <n> bit di <*src> in <*dest>
+ * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3231
+ */
 void any_copy(void *dest, const void *src, size_t n)
 {
     assert( dest != NULL );
     assert( src != NULL );
 
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    // Implementazione
+
+    // soluzione breve:
+    // memcpy(dest, src, n)
+
+    assert( n > 0 );
+
+    char *pszDest = (char *)dest;
+    const char *pszSource =( const char*)src;
+
+    while(n) // fin quando n è diverso da 0
+    {
+        // Copia byte per byte
+        *(pszDest++) = *(pszSource++);
+        --n;
+    }
 }
 
 int main()
