@@ -48,55 +48,98 @@ void upo_stack_destroy(upo_stack_t stack, int destroy_data)
     }
 }
 
+/**
+ * https://youtu.be/8f764sOcA5c?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2600
+ * 
+ * 
+ * Soluzione:
+ * https://youtu.be/aM6ZzJJ0u3o?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=13
+ */
+
+// aggiungere un dodo alla testa
 void upo_stack_push(upo_stack_t stack, void *data)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (stack != NULL)
+    {
+        // si alloca dello spazio per il nuovo nodo
+        // TODO upo_stack_node_t: cosa è?
+        upo_stack_node_t *node = malloc(sizeof(upo_stack_node_t));
+        if (node == NULL)
+        {
+            perror("Unable to create a stack node");
+            abort();
+        }
+        // si inseriscono i dati
+        node->data = data;
+        // si aggancia alla testa
+        node->next = stack->top;
+        stack->top = node;
+        // TODO IMPORTANTE: aggiornare la dimensione dello stack
+        stack->size += 1;
+    }
 }
 
+// rimuovera un nodo dalla lista
 void upo_stack_pop(upo_stack_t stack, int destroy_data)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (!upo_stack_is_empty(stack))
+    {
+        // node è l'elemento da eliminare
+        upo_stack_node_t *node = stack->top;
+        // cambio top
+        stack->top = stack->top->next;
+        // TODO IMPORTANTE: aggiornare la dimensione dello stack
+        stack->size -= 1;
+        // TODO: destroy_data ????
+        if (destroy_data)
+        {
+            // libero lo spazio in data
+            free(node->data);
+        }
+        // libero il collegamento al nodo
+        free(node);
+    }
 }
 
+// Ritorna la data dal top se non è NULL
 void* upo_stack_top(const upo_stack_t stack)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (upo_stack_is_empty(stack))
+    {
+        return NULL;
+    }
+    return stack->top->data;
 }
 
+// controlla se è vuota
 int upo_stack_is_empty(const upo_stack_t stack)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (stack == NULL)
+    {
+        return 1;
+    }
+    return 0;
 }
 
+// ritorna la dimensione dello stack
 size_t upo_stack_size(const upo_stack_t stack)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (upo_stack_is_empty(stack))
+    {
+        return NULL;
+    }
+    return stack->size;
 }
 
 void upo_stack_clear(upo_stack_t stack, int destroy_data)
 {
-    /* HINT:
-     * 1. For each node of the list stored in "stack":
-     *  1.1 Save the node pointed by "top" to a temporary variable "node"
-     *  1.2 Advance the "top" pointer by one node
-     *  1.3 If "destroy_data" != 0, destroy user data stored in "node" by invoking "free(node->data)"
-     *  1.4 Destroy "node" by invoking "free(node)"
-     * 2. Update stack size.
+    /* TODO: HINT:
+     * 1. Per ogni nodo dell'elenco memorizzato in "stack":
+     * 1.1 Salva il nodo puntato da "top" in una variabile temporanea "node"
+     * 1.2 Avanza il puntatore "in alto" di un nodo
+     * 1.3 Se "destroy_data"! = 0, distruggi i dati utente memorizzati in "node" invocando "free (node-> data)"
+     * 1.4 Distruggi "node" invocando "free (node)"
+     * 2. Aggiorna la dimensione dello stack.
      */
 
     /* TO STUDENTS:
