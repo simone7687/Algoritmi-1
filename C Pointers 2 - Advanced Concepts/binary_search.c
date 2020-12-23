@@ -85,12 +85,20 @@ int main()
 
 /**
  * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3608
+ * 
+ * TODO TEORIA: è simele a bsearch()
+ * 
  * *key: punta al valore da cercare
  * *base: punta alla prima cella del array in cui cercare
  * num_elem: numero alementi del elemento puntato da base
  * elem_size: è l'occumpazione di ogni elemento dell array
  * *compar: è la funzione di comparazione ritorna >0 se true
- * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3741
+ * Ritorna l'elemento da cercare nella array
+ *
+ * TODO TEORIA: Cosa fa? prende un array lo divide in due perti controlla l'elementi dentrale di questa array,
+ * se l'elemento è minore alloca continua nell lato minore (destra) altrimenti nella parte maggiore (sinistra).
+ *
+ * https://youtu.be/g4PMtXow5Lo?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=
  */
 void *binary_search(const void *key, const void *base, size_t num_elem, size_t elem_size, int (*compar)(const void *, const void *))
 {
@@ -100,48 +108,56 @@ void *binary_search(const void *key, const void *base, size_t num_elem, size_t e
 
     // soluzione: https://youtu.be/cgYIOriI_Ck?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=9
 
-     const unsigned char *pcb = base;
+    // converto in puntatore a bit (in char) come di solito
+    // const: l'elemento non verra modificato
+    const unsigned char *pcb = base;
+    // 
     size_t lo;
     size_t hi;
+
     void *ret = NULL;
 
 
-    /*
-    * Make sure the number of elements is > 0 to avoid underflow problems when
-    * initializing the 'hi' variable
-    */
+    // Assicurati che il numero di elementi sia> 0 per evitare problemi di underflow durante l'inizializzazione della variabile "hi"
     if (num_elem == 0)
-    {
         return NULL;
-    }
+
+    // inizio dell'array
     lo = 0;
+    // fine dell'array
     hi = num_elem-1;
+    // mi fermo sole se lo e hi si "intrecciano" o se ho trovato ret
     while (lo <= hi && ret == NULL)
     {
+        // mi metto nel mezzo a lo hi (nel primo caso in mezzo all'array)
         size_t mid = (lo+hi)/2;
+
+        // mi sposto di mid (numero elementi) elementi di elem_size
         const void *pmid = pcb + mid*elem_size; // -> &base[mid]
+        
+        // comparo l'elemento attuale e la chiave
         int cmp;
         cmp = compar(key, pmid);
-        if (cmp == 0)
+        if (cmp == 0)   // trovato
         {
-            ret = (void*) pmid; // A cast is needed because we are casting from a const pointer to a non-const pointer.
+            ret = (void*) pmid; // È necessario un cast perché stiamo trasmettendo da un puntatore const a un puntatore non const.
         }
-        else if (cmp < 0)
+        else if (cmp < 0)   // la key è minore
         {
-            hi = mid-1;
+            hi = mid-1; // TODO: perchè +-1? dopo viene diveso per 2 quindi cerca 2 volte lo stesso elemento
         }
-        else if (cmp > 0)
+        else if (cmp > 0)   // la key è minore
         {
             lo = mid+1;
         }
         /*
-        * At the beginning of each iteration, it may happen that both 'lo' and
-        * 'hi' are 0, thus resulting in mid == 0.
-        * This means that when 'hi' is updated (i.e., hi=mid-1), we incur in an
-        * overflow and the function may loop infinitively.
-        * To avoid this, we check for the condition mid == 0 and when true we
-        * break the loop.
-        */
+         * All'inizio di ogni iterazione, può accadere che sia "lo" che
+         * 'hi' è 0, quindi risulta mid == 0.
+         * Ciò significa che quando 'hi' viene aggiornato (cioè hi = mid-1), incorriamo in un
+         * overflow e la funzione può essere ripetuta all'infinito.
+         * Per evitare ciò, controlliamo la condizione mid == 0 e quando vero we
+         * rompere il ciclo.
+         */
         if (mid == 0)
         {
             break;
