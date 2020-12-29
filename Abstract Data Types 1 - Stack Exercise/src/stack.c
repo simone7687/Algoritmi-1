@@ -56,7 +56,7 @@ void upo_stack_destroy(upo_stack_t stack, int destroy_data)
  * https://youtu.be/aM6ZzJJ0u3o?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=13
  */
 
-// aggiungere un dodo alla testa
+// aggiungere un nodo alla testa
 void upo_stack_push(upo_stack_t stack, void *data)
 {
     if (stack != NULL)
@@ -118,6 +118,10 @@ int upo_stack_is_empty(const upo_stack_t stack)
     {
         return 1;
     }
+    if (stack->size == 0)
+    {
+        return 1;
+    }
     return 0;
 }
 
@@ -142,8 +146,8 @@ void upo_stack_clear(upo_stack_t stack, int destroy_data)
      * 2. Aggiorna la dimensione dello stack.
      */
 
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    while(!upo_stack_is_empty(stack))
+    {
+        upo_stack_pop(stack, destroy_data);
+    }
 }
