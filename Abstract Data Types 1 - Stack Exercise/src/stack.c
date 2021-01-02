@@ -59,6 +59,7 @@ void upo_stack_destroy(upo_stack_t stack, int destroy_data)
 // aggiungere un nodo alla testa
 void upo_stack_push(upo_stack_t stack, void *data)
 {
+    // Implementazione
     if (stack != NULL)
     {
         // si alloca dello spazio per il nuovo nodo
@@ -82,6 +83,7 @@ void upo_stack_push(upo_stack_t stack, void *data)
 // rimuovera un nodo dalla lista
 void upo_stack_pop(upo_stack_t stack, int destroy_data)
 {
+    // Implementazione
     if (!upo_stack_is_empty(stack))
     {
         // node è l'elemento da eliminare
@@ -104,6 +106,7 @@ void upo_stack_pop(upo_stack_t stack, int destroy_data)
 // Ritorna la data dal top se non è NULL
 void* upo_stack_top(const upo_stack_t stack)
 {
+    // Implementazione
     if (upo_stack_is_empty(stack))
     {
         return NULL;
@@ -114,6 +117,7 @@ void* upo_stack_top(const upo_stack_t stack)
 // controlla se è vuota
 int upo_stack_is_empty(const upo_stack_t stack)
 {
+    // Implementazione
     if (stack == NULL)
     {
         return 1;
@@ -128,6 +132,7 @@ int upo_stack_is_empty(const upo_stack_t stack)
 // ritorna la dimensione dello stack
 size_t upo_stack_size(const upo_stack_t stack)
 {
+    // Implementazione
     if (upo_stack_is_empty(stack))
     {
         return NULL;
@@ -137,6 +142,7 @@ size_t upo_stack_size(const upo_stack_t stack)
 
 void upo_stack_clear(upo_stack_t stack, int destroy_data)
 {
+    // Implementazione
     /* TODO: HINT:
      * 1. Per ogni nodo dell'elenco memorizzato in "stack":
      * 1.1 Salva il nodo puntato da "top" in una variabile temporanea "node"
