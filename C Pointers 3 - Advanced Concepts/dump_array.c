@@ -24,42 +24,65 @@ void dump_array(const void *base, size_t num_elem, size_t elem_size, void (*dump
     assert( fp != NULL );
 
     // Implementazione
-    // TODO: unsigned???? lo usato perchè lo fa anche il prof ma non so cosa sia
+    // unsigned: sigifica che non lo modificherò
     unsigned char *base_char = (unsigned char *)base;
 
-    while(num_elem) // fin quando n è diverso da 0
+    //..............
+    for (size_t i = 0; i < num_elem; i++)
     {
-        // ..............
+        //.................
         (*dump_element)((void *)base_char, fp);
-        // .................
+        //.................
         base_char = base_char+elem_size;
 
-        --num_elem;
+        /*
+        void *ptr = &base_char[i * elem_size];
+        dump_element(ptr, fp);
+        */
     }
 }
 
+/**
+ * Stampo un numero
+ */
 void dump_int(const void *p, FILE *fp)
 {
     assert( p != NULL );
     assert( fp != NULL );
 
     // Implementazione
-    // ......
-    printf("%d ", *(int *)(p));
+
+    // Si deve sempre convertire in char *
+    unsigned char *b = (unsigned char*)p;
+    // converto *b in int
+    fprintf(fp, "%d ", (int)*b);
+
+    // Altra possibile implementazione
+    /*
+    // TODO: Questa è più giusta ma non ho capito il *(int *)(p), perche funziona
+    // converto p (senza *) in   int *
+    fprintf(fp, "%d ", *(int *)(p));
+    */
 }
 
+/**
+ * Stampo i caratteri di una stringa
+ */
 void dump_string(const void *p, FILE *fp)
 {
     assert( p != NULL );
     assert( fp != NULL );
 
     // Implementazione
-    // .......
+    // Si deve sempre convertire in char *
     unsigned char *p_char = (unsigned char *)p;
-    // .............
-    // sizeof(char) non va bene
+
+    // TODO: Non so perche non funziona
+    // TODO: al posto di scrivere e01 scrive un carattere, (non è giusto perche se faccio "-%c " cambia il carattere)
+    // aggiungo ogni volta 1 a p_char, per conoscere ogni carattere
     for (size_t k = 0; k < sizeof(char); ++k)
-        printf("%c -", (char) *(p_char+k));
+        // converto *(p_char+k) in char
+        fprintf(fp, "%c ", (char) *(p_char+k));
 }
 
 int main()

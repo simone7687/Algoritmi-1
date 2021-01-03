@@ -27,11 +27,12 @@ void any_copy(void *dest, const void *src, size_t n)
     char *pszDest = (char *)dest;
     const char *pszSource =( const char*)src;
 
-    while(n) // fin quando n è diverso da 0
+    for (size_t i = 0; i<n; i++)
     {
         // Copia byte per byte
         *(pszDest++) = *(pszSource++);
-        --n;
+        // oppure
+        // pszDest[i] = pszSource[i];
     }
 }
 
