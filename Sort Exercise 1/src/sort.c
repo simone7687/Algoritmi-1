@@ -218,31 +218,31 @@ int upo_quick_sort_partion(void *base, size_t lo, size_t hi, size_t size, upo_so
     unsigned char *ptr = base;
     // l'array base da lo a hi
     // verra preso un consideracome per modificare l'arrray base
-    unsigned char *aux = NULL;
+    // unsigned char *aux = NULL;
 
     // aux[n]:  è ultimo elemento di aux[]
-    size_t n = hi-lo+1;
+    // size_t n = hi-lo+1;
 
     // aux[i]: iniziera da zero(ptr[lo]) fino arrivare a j
     size_t i = lo;
-    //
+    // 
     size_t p = hi;
-
-    //
+    // 
     size_t k;
-    aux = malloc(n*size);
-    if (aux == NULL)
-    {
-        perror("Unable to allocate memory for auxiliary vector");
-        abort();
-    }
+
+    // aux = malloc(n*size);
+    // if (aux == NULL)
+    // {
+    //     perror("Unable to allocate memory for auxiliary vector");
+    //     abort();
+    // }
     // Copia base [lo], ..., base [hi] nell'array ausiliario
     // aux: destinazione
     // ptr+lo*size: sposta la posizione di ptr su lo
         // ptr: l'array di sorgete
         // lo*size: dimensione totale dei elementi da 0 a lo
     // n*size: dimensione dei elementi da lo a hi
-    memcpy(aux, ptr+lo*size, n*size);
+    // memcpy(aux, ptr+lo*size, n*size);
 
 
     // adesso fa il merge, cioè
