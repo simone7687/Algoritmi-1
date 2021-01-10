@@ -49,6 +49,8 @@ void upo_insertion_sort(void *base, size_t n, size_t size, upo_sort_comparator_t
 {
     // Implementazione
     // TODO: ancora da implementare
+    fprintf(stderr, "To be implemented!\n");
+    abort();
 }
 
 /**
