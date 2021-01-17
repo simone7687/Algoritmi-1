@@ -53,3 +53,10 @@ dkms.conf
 C Pointers 3 - Advanced Concepts/dump_array
 C Pointers 2 - Advanced Concepts/binary_search
 C Pointers 1 - Advanced Concepts/any_copy
+C Pointers (Source Code) 1 - Basic Concepts/const_ptr
+C Pointers (Source Code) 1 - Basic Concepts/dynmem
+C Pointers (Source Code) 1 - Basic Concepts/ptr_arith
+C Pointers (Source Code) 1 - Basic Concepts/ptr_basics
+C Pointers (Source Code) 1 - Basic Concepts/ptr_vs_array
+C Pointers (Source Code) 1 - Basic Concepts/sizeof
+C Pointers (Source Code) 1 - Basic Concepts/strings
