@@ -333,35 +333,13 @@ void upo_bst_delete_max(upo_bst_t tree, int destroy_data)
     abort();
 }
 
-const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp)
-{
-    if (node != NULL)
-    {
-        int cmp = key_cmp(key, node->key);
-        if (cmp < 0)
-        {
-            /* The key at current node is greater than the given key.
-            * Search in the left subtree if there is a smaller key that is
-            * also less than the given key. */
-            return upo_bst_floor_impl(node->left, key, key_cmp);
-        }
-        else if (cmp > 0)
-        {
-            /* The key at current node is lower than the given key.
-            * Search in the right subtree if there is a larger key that is
-            * still smaller than the given key. */
-            const upo_bst_node_t *floor_node = NULL;
-            floor_node = upo_bst_floor_impl(node->right, key, key_cmp);
-            return (floor_node != NULL) ? floor_node : node;
-        }
-        else
-        {
-            return node;
-        }
-    }
-    return NULL;
-}
+const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp);
 
+/**
+ * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
+ * restituisce la piu chiave maggiore, minore uguale alla chiave passata per parametro
+ * se non esiste o l'albero è nullo ritorna null
+ */
 void* upo_bst_floor(const upo_bst_t tree, const void *key)
 {
     if (tree != NULL)
@@ -371,6 +349,38 @@ void* upo_bst_floor(const upo_bst_t tree, const void *key)
         if (node != NULL)
         {
             return node->key;
+        }
+    }
+    return NULL;
+}
+const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp)
+{
+    if (node != NULL)
+    {
+        int cmp = key_cmp(key, node->key);
+        // non lo abbiamo trovato
+        // allora verso left
+        if (cmp < 0)
+        {
+            /* The key at current node is greater than the given key.
+            * Search in the left subtree if there is a smaller key that is
+            * also less than the given key. */
+            return upo_bst_floor_impl(node->left, key, key_cmp);
+        }
+        // lo abbiamo trovato, ma prtebbe esserci una soluzione migliore
+        else if (cmp > 0)
+        {
+            /* The key at current node is lower than the given key.
+            * Search in the right subtree if there is a larger key that is
+            * still smaller than the given key. */
+            const upo_bst_node_t *floor_node = NULL;
+            floor_node = upo_bst_floor_impl(node->right, key, key_cmp);
+            return (floor_node != NULL) ? floor_node : node;
+        }
+        // trovato
+        else
+        {
+            return node;
         }
     }
     return NULL;
@@ -392,17 +402,22 @@ upo_bst_key_list_t upo_bst_keys_range(const upo_bst_t tree, const void *low_key,
     abort();
 }
 
+void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp, upo_bst_key_list_t *list);
+
+/**
+ * ritorno una lista di tutti i nodi dell'albero
+ */
 upo_bst_key_list_t upo_bst_keys(const upo_bst_t tree)
 {
     if (tree != NULL)
     {
         upo_bst_key_list_t list = NULL;
+        //TODO: &list è la testa della lista
         upo_bst_keys_impl(tree->root, tree->key_cmp, &list);
         return list;
     }
     return NULL;
 }
-
 void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp, upo_bst_key_list_t *list)
 {
     if (node != NULL)
@@ -426,6 +441,55 @@ void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp,
     }
 }
 
+int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const void *max_key, upo_bst_comparator_t key_cmp);
+
+/**
+ * verificare se rispetta la proprietà di bst:
+ * 
+ * la cosa più semplice è verificare che il nodo attuale e destra e sinistra dono giusti
+ * cie solo le tre foglie.
+ * 
+ * la parte problematica è:
+ * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3696
+ *          8
+ *      3
+ *  1       9
+ * non è un bst, 9 è maggiore di 8
+ * 
+ * la soluzione è mantenere alcuni elementi precedenti min e un max
+ * (non al difuori della ricorsione, verra passata per parametro)
+ * 
+ * inizio con
+ * max = head
+ * min = inf (valore inferiore a tutti)
+ * 
+ * quando vado a destra
+ * max = nodo attuale
+ * 
+ * quando vado a sisistra
+ * min = nodo attuale
+ * 
+ * es
+ *          8
+ *      3
+ *  1       9
+ * 
+ * quando siamo i 1
+ * max: 3
+ * min: inf
+ * 
+ * quando siamo a 9
+ * max: 8
+ * min: 3
+ */
+int upo_bst_is_bst(const upo_bst_t tree, const void *min_key, const void *max_key)
+{
+    if (upo_bst_is_empty(tree))
+    {
+        return 1;
+    }
+    return upo_bst_is_bst_impl(tree->root, min_key, max_key, tree->key_cmp);
+}
 int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const void *max_key, upo_bst_comparator_t key_cmp)
 {
     if (node == NULL)
@@ -440,14 +504,6 @@ int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const v
     && upo_bst_is_bst_impl(node->right, node->key, max_key, key_cmp);
 }
 
-int upo_bst_is_bst(const upo_bst_t tree, const void *min_key, const void *max_key)
-{
-    if (upo_bst_is_empty(tree))
-    {
-        return 1;
-    }
-    return upo_bst_is_bst_impl(tree->root, min_key, max_key, tree->key_cmp);
-}
 
 
 /**** EXERCISE #2 - END of EXTRA OPERATIONS ****/
