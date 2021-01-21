@@ -26,6 +26,12 @@
 
 /**** EXERCISE #1 - BEGIN of FUNDAMENTAL OPERATIONS ****/
 
+/**
+ * https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2732
+ * 
+ * Soluzione:
+ * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu
+ */
 
 upo_bst_t upo_bst_create(upo_bst_comparator_t key_cmp)
 {
@@ -109,20 +115,107 @@ int upo_bst_contains(const upo_bst_t tree, const void *key)
     abort();
 }
 
+upo_bst_node_t* upo_bst_max_impl(upo_bst_node_t *node)
+{
+    if (node == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        if (node->right != NULL)
+        {
+            return upo_bst_max_impl(node->right);
+        }
+        else
+        {
+            return node;
+        }
+    }
+}
+
+upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp, int destroy_data)
+{
+    if (node != NULL)
+    {
+        int cmp = key_cmp(key, node->key);
+        if (cmp < 0)
+        {
+            node->left = upo_bst_delete_impl(node->left, key, key_cmp, destroy_data);
+        }
+        else if (cmp > 0)
+        {
+            node->right = upo_bst_delete_impl(node->right, key, key_cmp, destroy_data);
+        }
+        else /* cmp == 0 */
+        {
+            if (node->left != NULL && node->right != NULL)
+            {
+                /* Two children */
+                /* Use of the largest predecessor:
+                * 1. Find the node with the maximum key in the left-child subtree
+                * 2. Change the key and the value of current node to those of the node
+                with maximum key
+                * 3. Delete the node with the maximum key in the left-child subtree
+                */
+                upo_bst_node_t *max_node = upo_bst_max_impl(node->left);
+                if (destroy_data)
+                {
+                    free(node->key);
+                    free(node->value);
+                }
+                node->key = max_node->key;
+                node->value = max_node->value;
+                node->left = upo_bst_delete_impl(node->left, node->key, key_cmp, 0);
+            }
+            else
+            {
+                /* One child */
+                upo_bst_node_t *old_node = node;
+                if (node->left == NULL)
+                {
+                    node = node->right;
+                }
+                else
+                {
+                    node = node->left;
+                }
+                if (destroy_data)
+                {
+                    free(old_node->key);
+                    free(old_node->value);
+                }
+                free(old_node);
+            }
+        }
+    }
+    return node;
+}
+
 void upo_bst_delete(upo_bst_t tree, const void *key, int destroy_data)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (tree != NULL)
+    {
+        tree->root = upo_bst_delete_impl(tree->root, key, tree->key_cmp, destroy_data);
+    }
+}
+
+size_t upo_bst_size_impl(const upo_bst_node_t *node)
+{
+    if (node == NULL)
+    {
+        return 0;
+    }
+    return 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
 }
 
 size_t upo_bst_size(const upo_bst_t tree)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (tree == NULL)
+    {
+        return 0;
+    }
+    return upo_bst_size_impl(tree->root);
 }
 
 size_t upo_bst_height(const upo_bst_t tree)
@@ -156,6 +249,13 @@ int upo_bst_is_empty(const upo_bst_t tree)
 /**** EXERCISE #2 - BEGIN of EXTRA OPERATIONS ****/
 
 
+/**
+ * https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3084
+ * 
+ * Soluzione:
+ * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
+ */
+
 void* upo_bst_min(const upo_bst_t tree)
 {
     /* TO STUDENTS:
@@ -188,12 +288,47 @@ void upo_bst_delete_max(upo_bst_t tree, int destroy_data)
     abort();
 }
 
+const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp)
+{
+    if (node != NULL)
+    {
+        int cmp = key_cmp(key, node->key);
+        if (cmp < 0)
+        {
+            /* The key at current node is greater than the given key.
+            * Search in the left subtree if there is a smaller key that is
+            * also less than the given key. */
+            return upo_bst_floor_impl(node->left, key, key_cmp);
+        }
+        else if (cmp > 0)
+        {
+            /* The key at current node is lower than the given key.
+            * Search in the right subtree if there is a larger key that is
+            * still smaller than the given key. */
+            const upo_bst_node_t *floor_node = NULL;
+            floor_node = upo_bst_floor_impl(node->right, key, key_cmp);
+            return (floor_node != NULL) ? floor_node : node;
+        }
+        else
+        {
+            return node;
+        }
+    }
+    return NULL;
+}
+
 void* upo_bst_floor(const upo_bst_t tree, const void *key)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (tree != NULL)
+    {
+        const upo_bst_node_t *node = NULL;
+        node = upo_bst_floor_impl(tree->root, key, tree->key_cmp);
+        if (node != NULL)
+        {
+            return node->key;
+        }
+    }
+    return NULL;
 }
 
 void* upo_bst_ceiling(const upo_bst_t tree, const void *key)
@@ -214,18 +349,59 @@ upo_bst_key_list_t upo_bst_keys_range(const upo_bst_t tree, const void *low_key,
 
 upo_bst_key_list_t upo_bst_keys(const upo_bst_t tree)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (tree != NULL)
+    {
+        upo_bst_key_list_t list = NULL;
+        upo_bst_keys_impl(tree->root, tree->key_cmp, &list);
+        return list;
+    }
+    return NULL;
+}
+
+void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp, upo_bst_key_list_t *list)
+{
+    if (node != NULL)
+    {
+        // Add keys to the list in-order so as to produce a sorted list
+        // Add keys of the left subtree
+        upo_bst_keys_impl(node->left, key_cmp, list);
+        // Add key of this node
+        upo_bst_key_list_node_t *list_node = NULL;
+        list_node = malloc(sizeof(struct upo_bst_key_list_node_s));
+        if (list_node == NULL)
+        {
+            perror("Unable to allocate memory for a new node of the key list");
+            abort();
+        }
+        list_node->key = node->key;
+        list_node->next = *list;
+        *list = list_node;
+        // Add keys of the right subtree
+        upo_bst_keys_impl(node->right, key_cmp, list);
+    }
+}
+
+int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const void *max_key, upo_bst_comparator_t key_cmp)
+{
+    if (node == NULL)
+    {
+        return 1;
+    }
+    if (key_cmp(node->key, min_key) < 0 || key_cmp(node->key, max_key) > 0)
+    {
+        return 0;
+    }
+    return upo_bst_is_bst_impl(node->left, min_key, node->key, key_cmp)
+    && upo_bst_is_bst_impl(node->right, node->key, max_key, key_cmp);
 }
 
 int upo_bst_is_bst(const upo_bst_t tree, const void *min_key, const void *max_key)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (upo_bst_is_empty(tree))
+    {
+        return 1;
+    }
+    return upo_bst_is_bst_impl(tree->root, min_key, max_key, tree->key_cmp);
 }
 
 
