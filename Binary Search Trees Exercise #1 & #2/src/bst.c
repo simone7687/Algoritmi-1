@@ -119,6 +119,11 @@ int upo_bst_contains(const upo_bst_t tree, const void *key)
     abort();
 }
 
+/**
+ * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1398
+ * ritorna il dodo maggiore dopo *node
+ * è semplice prendel'utimo noo a destra
+ */
 upo_bst_node_t* upo_bst_max_impl(upo_bst_node_t *node)
 {
     if (node == NULL)
@@ -141,6 +146,8 @@ upo_bst_node_t* upo_bst_max_impl(upo_bst_node_t *node)
 upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp, int destroy_data);
 
 /**
+ * elimina un nodo
+ * 
  * tree: l'albero
  * key: la chiave da cancellare
  * destroy_data: se eliminare il data
@@ -233,15 +240,11 @@ upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_b
     return node;
 }
 
-size_t upo_bst_size_impl(const upo_bst_node_t *node)
-{
-    if (node == NULL)
-    {
-        return 0;
-    }
-    return 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
-}
+size_t upo_bst_size_impl(const upo_bst_node_t *node);
 
+/**
+ * restituisce il numero di nodi
+ */
 size_t upo_bst_size(const upo_bst_t tree)
 {
     if (tree == NULL)
@@ -249,6 +252,15 @@ size_t upo_bst_size(const upo_bst_t tree)
         return 0;
     }
     return upo_bst_size_impl(tree->root);
+}
+size_t upo_bst_size_impl(const upo_bst_node_t *node)
+{
+    if (node == NULL)
+    {
+        return 0;
+    }
+    // solo questo è utile vedere
+    return 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
 }
 
 size_t upo_bst_height(const upo_bst_t tree)
