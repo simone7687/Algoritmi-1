@@ -43,6 +43,10 @@ upo_bst_t upo_bst_create(upo_bst_comparator_t key_cmp)
     }
 
     tree->root = NULL;
+    // TODO: questa è la funzione di comparazione per sapere se le due key sono uguali
+    // se il risultato è 0 sono uguali
+    // se è minore allora sara verso node->left
+    // se è minore allora sara verso node->right
     tree->key_cmp = key_cmp;
 
     return tree;
@@ -134,6 +138,24 @@ upo_bst_node_t* upo_bst_max_impl(upo_bst_node_t *node)
     }
 }
 
+upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp, int destroy_data);
+
+/**
+ * tree: l'albero
+ * key: la chiave da cancellare
+ * destroy_data: se eliminare il data
+ */
+void upo_bst_delete(upo_bst_t tree, const void *key, int destroy_data)
+{
+    if (tree != NULL)
+    {
+        tree->root = upo_bst_delete_impl(tree->root, key, tree->key_cmp, destroy_data);
+    }
+}
+/**
+ * funzione ricorsica
+ * ritorna il nodo dopo che è stato modificato, puo essere anche null
+ */
 upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp, int destroy_data)
 {
     if (node != NULL)
@@ -147,30 +169,49 @@ upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_b
         {
             node->right = upo_bst_delete_impl(node->right, key, key_cmp, destroy_data);
         }
+        /**
+         * In che modo si cancella:
+         * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=447
+         * https://www.geeksforgeeks.org/binary-search-tree-set-2-delete/
+         */
         else /* cmp == 0 */
         {
+            // Se ha due figli
             if (node->left != NULL && node->right != NULL)
             {
-                /* Two children */
-                /* Use of the largest predecessor:
-                * 1. Find the node with the maximum key in the left-child subtree
-                * 2. Change the key and the value of current node to those of the node
-                with maximum key
-                * 3. Delete the node with the maximum key in the left-child subtree
-                */
+                /*
+                 * 1. Trova il nodo con la chiave massima nella sottostruttura figlia di sinistra
+                 * 2. Modificare la chiave e il valore del nodo corrente con quelli del nodo con la chiave massima
+                 * 3. Elimina il nodo con la chiave massima nel sottoalbero figlio di sinistra
+                 * 
+                 * cancello 8
+                 *      8
+                 * 7        10
+                 *      9       11
+                 * 
+                 * sposto tutto l'asse left in su
+                 *      10
+                 * 7        11
+                 *      9
+                 */
+                // cancllo 8
                 upo_bst_node_t *max_node = upo_bst_max_impl(node->left);
                 if (destroy_data)
                 {
                     free(node->key);
                     free(node->value);
                 }
+                // lo sostituisco con 8
                 node->key = max_node->key;
                 node->value = max_node->value;
+                // sposto tutto l'asse left in su
                 node->left = upo_bst_delete_impl(node->left, node->key, key_cmp, 0);
             }
+            // se non ha figli o solo uno
             else
             {
-                /* One child */
+                // lo sostituisco con il figlio, se non esiste lo sostituiscop con null
+                // non è ricorisivo
                 upo_bst_node_t *old_node = node;
                 if (node->left == NULL)
                 {
@@ -190,14 +231,6 @@ upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_b
         }
     }
     return node;
-}
-
-void upo_bst_delete(upo_bst_t tree, const void *key, int destroy_data)
-{
-    if (tree != NULL)
-    {
-        tree->root = upo_bst_delete_impl(tree->root, key, tree->key_cmp, destroy_data);
-    }
 }
 
 size_t upo_bst_size_impl(const upo_bst_node_t *node)
