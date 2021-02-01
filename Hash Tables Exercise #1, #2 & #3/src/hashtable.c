@@ -33,9 +33,6 @@
 
 /**
  * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7635
- * 
- * Soluzione:
- * 
  */
 
 upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
@@ -139,19 +136,33 @@ void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
     return old_value;
 }
 
+/**
+ * https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=54
+ * 
+ */
 void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
 {
+    // se l'hash è valida (è stata inizializzata)
     if (ht != NULL && ht->slots != NULL)
     {
+        // calcolo il valore hash ()
+        // TODO: Cosa è?
         size_t h = ht->key_hash(key, ht->capacity);
+
+        // Controllo se esiste un nodo con la chiave == key
+        // quindi faccio un for completo che si blocca solo se 
+        // il nodo attuale (node: creato qui sotto)
+        // è uguale a key
+        // se non esiste node sarà == NULL
         upo_ht_sepchain_list_node_t *node = NULL;
-        /* Look for a node with the same key (if any) */
         for (node = ht->slots[h].head;
-        node != NULL && ht->key_cmp(key, node->key) != 0;
-        node = node->next)
+            node != NULL && ht->key_cmp(key, node->key) != 0;
+            node = node->next)
         {
             ; /* empty */
         }
+        // se node == NULL
+        // inserisco un nuovo nodo
         if (node == NULL)
         {
             /* Key not found -> Add a new node to the head of the list*/
@@ -167,7 +178,7 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
             ht->slots[h].head = node;
             ht->size += 1;
         }
-        /* else: ignore duplicate */
+        // se node != NULL allora nulla
     }
 }
 
