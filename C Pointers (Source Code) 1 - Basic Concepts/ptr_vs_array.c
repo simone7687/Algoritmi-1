@@ -8,6 +8,7 @@ void print_array2(int* const a, size_t n);
 void print_array4(const int *a, size_t n);
 void print_array5(const int* const a, size_t n);
 
+// TODO: funzioni per stampare un array
 void print_array1(int *a, size_t n)
 {
     size_t i;

@@ -5,6 +5,7 @@
 
 int main()
 {
+    // TODO: queste possono essere tutte considerate delle stringhe nella printf
     char s[] = "Hello";
     char s2[] = {'H','e','l','l','o','\0'};
     const char* s3 = "Hello";

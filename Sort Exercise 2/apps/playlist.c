@@ -79,55 +79,91 @@ static int parse_entry(const char *str, entry_t *entry);
 
 
 /**** EXERCISE #2 - BEGIN of SORTING PLAYLISTS ****/
+/**
+ * https://youtu.be/Qj48bXW7zd4?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=4417
+ * si deve ordinare una playlist
+ * sono fatte in questo modo:
+ * |artista|album|anno|track number|track name|
+ * 
+ * ES3: https://youtu.be/Qj48bXW7zd4?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=5117
+ */
 
 
 int by_artist_comparator(const void *a, const void *b)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    while() {
+        if (!=) {
+            ++;
+        }
+        else () {
+            return (>);
+        }
+    }
+    return 0;
 }
 
 int by_album_comparator(const void *a, const void *b)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    return by_artist_comparator(a, b);
 }
 
 int by_year_comparator(const void *a, const void *b)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    int a_int = (int)*a;
+    int b_int = (int)*b;
+    return (a_int > b_int);
 }
 
 int by_track_number_comparator(const void *a, const void *b)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    return by_year_comparator(a, b);
 }
 
 int by_track_title_comparator(const void *a, const void *b)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    return by_artist_comparator(a, b);
 }
 
 void playlist_sort(playlist_t playlist, playlist_sorting_criterion_t order_by)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
-}
+    /**
+     * faccio un for per cheare un array dove ci sono solo gli elementi da ordinare
+     * uso il upo_merge_sort per ordinare l'array
+     * poi ordino la play list in base all'array
+     * 
+     * 
+     * 
+     */
+    // char *aux = malloc(playlist->size*sizeof(char*));
+
+    // for(int i = 0; playlist->size > i; i++)
+    // {
+    //     aux[i] = *playlist->entries[i].artist;
+    // }
+    // upo_merge_sort(aux, playlist->size, sizeof(char*), by_artist_comparator);
+
+    // TODO RIPASSARE SWITCH
+    switch (order_by)
+    {
+        case playlist_by_artist_sorting_criterion:
+            upo_merge_sort(playlist, playlist->size, sizeof(char *), by_artist_comparator);
+            break;
+        case playlist_by_album_sorting_criterion:
+            upo_merge_sort(playlist, playlist->size, sizeof(char *), by_album_comparator);
+            break;
+        case playlist_by_year_sorting_criterion:
+            upo_merge_sort(playlist, playlist->size, sizeof(int), by_year_comparator);
+            break;
+        case playlist_by_track_number_sorting_criterion:
+            upo_merge_sort(playlist, playlist->size, sizeof(int), by_track_number_comparator);
+            break;
+        case playlist_by_track_title_sorting_criterion:
+            upo_merge_sort(playlist, playlist->size, sizeof(char *), by_track_title_comparator);
+            break;
+        case playlist_unknown_sorting_criterion:
+            break;
+    }
+} 
 
 
 /**** EXERCISE #2 - END of SORTING PLAYLISTS ****/

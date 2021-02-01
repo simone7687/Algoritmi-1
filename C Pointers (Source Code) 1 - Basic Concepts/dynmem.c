@@ -52,11 +52,11 @@ int main()
 
     free(ptr);
 
-    // Dynamic matrix
+    // TODO: Importante Matrice dinamica
 
     size_t nrows = 2;
     size_t ncols = 5;
-    // Allocates memory and initiliazes the matrix to the identity matrix
+    // Alloca la memoria e inizializza la matrice alla matrice identità
     int **mat2x5 = malloc(nrows*sizeof(int*));
     for (size_t i = 0; i < nrows; ++i)
     {
@@ -66,7 +66,7 @@ int main()
             mat2x5[i][j] = (i == j) ? 1 : 0;
         }
     }
-    // Uses the matrix: performs scalar-matrix product and prints the result
+    // Utilizza la matrice: esegue il prodotto a matrice scalare e stampa il risultato
     int scalar = 10;
     for (size_t i = 0; i < nrows; ++i)
     {
@@ -92,7 +92,7 @@ int main()
         }
     }
     printf("]\n");
-    // Deallocates memory
+    // Dealocare memoria
     for (size_t i = 0; i < nrows; ++i)
     {
         free(mat2x5[i]);

@@ -21,6 +21,7 @@ void any_copy(void *dest, const void *src, size_t n)
 
     // soluzione breve:
     // memcpy(dest, src, n)
+    // TODO: scriversi titti i mem...
 
     assert( n > 0 );
 
