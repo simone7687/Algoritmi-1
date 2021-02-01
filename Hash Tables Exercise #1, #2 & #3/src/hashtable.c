@@ -31,6 +31,12 @@
 
 /*** EXERCISE #1 - BEGIN of HASH TABLE with SEPARATE CHAINING ***/
 
+/**
+ * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7635
+ * 
+ * Soluzione:
+ * 
+ */
 
 upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -135,10 +141,34 @@ void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 
 void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (ht != NULL && ht->slots != NULL)
+    {
+        size_t h = ht->key_hash(key, ht->capacity);
+        upo_ht_sepchain_list_node_t *node = NULL;
+        /* Look for a node with the same key (if any) */
+        for (node = ht->slots[h].head;
+        node != NULL && ht->key_cmp(key, node->key) != 0;
+        node = node->next)
+        {
+            ; /* empty */
+        }
+        if (node == NULL)
+        {
+            /* Key not found -> Add a new node to the head of the list*/
+            node = malloc(sizeof(upo_ht_sepchain_list_node_t));
+            if (node == NULL)
+            {
+                perror("Unable to allocate memory for a node of the list of collisions");
+                abort();
+            }
+            node->key = key;
+            node->value = value;
+            node->next = ht->slots[h].head;
+            ht->slots[h].head = node;
+            ht->size += 1;
+        }
+        /* else: ignore duplicate */
+    }
 }
 
 void* upo_ht_sepchain_get(const upo_ht_sepchain_t ht, const void *key)
@@ -204,6 +234,12 @@ upo_ht_hasher_t upo_ht_sepchain_get_hasher(const upo_ht_sepchain_t ht)
 
 /*** EXERCISE #2 - BEGIN of HASH TABLE with LINEAR PROBING ***/
 
+/**
+ * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7689
+ * 
+ * Soluzione:
+ * 
+ */
 
 upo_ht_linprob_t upo_ht_linprob_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -303,10 +339,49 @@ void* upo_ht_linprob_put(upo_ht_linprob_t ht, void *key, void *value)
 
 void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (ht != NULL && ht->slots != NULL)
+    {
+        size_t h = 0;
+        size_t h_tomb = 0;
+        int found_tombstone = 0;
+        /* Double the size if 50% is full */
+        if (upo_ht_linprob_load_factor(ht) >= 0.5)
+        {
+            upo_ht_linprob_resize(ht, 2*ht->capacity);
+        }
+        /* Look for an empty slot (by means of linear probing) where to put
+         * the new key-value pair.
+         * If, during slot probing, we encounter a tombstone, we cannot stop the
+         * probing (and put the given key-value in that slot) since there can be
+         * a slot after the tombstone that already contains the given key-value.
+         * When we stop the probing at an empty slot we insert the given
+         * key-value pair either in the first tombstone we found (if any) or in
+         * the empty slot when we stopped the probing.
+         */
+        h = ht->key_hash(key, ht->capacity);
+        while ((ht->slots[h].key != NULL && ht->key_cmp(key, ht->slots[h].key) != 0) /*used slot */
+        || ht->slots[h].tombstone != 0) /* tombstone slot */
+        {
+            if (ht->slots[h].tombstone != 0 && !found_tombstone)
+            {
+                h_tomb = h;
+                found_tombstone = 1;
+            }
+            h = (h+1) % ht->capacity;
+        }
+        if (ht->slots[h].key == NULL)
+        {
+            if (found_tombstone)
+            {
+                h = h_tomb;
+            }
+            ht->slots[h].key = key;
+            ht->slots[h].value = value;
+            ht->slots[h].tombstone = 0;
+            ht->size += 1;
+        }
+        /* else: ignore duplicate */
+    }
 }
 
 void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
@@ -411,13 +486,38 @@ void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
 
 /*** EXERCISE #3 - BEGIN of HASH TABLE - EXTRA OPERATIONS ***/
 
+/**
+ * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7754
+ * 
+ * Soluzione:
+ * 
+ */
 
 upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    upo_ht_key_list_t list = NULL;
+    if (!upo_ht_sepchain_is_empty(ht))
+    {
+        size_t i = 0;
+        for (i = 0; i < ht->capacity; ++i)
+        {
+            upo_ht_sepchain_list_node_t *node = NULL;
+            for (node = ht->slots[i].head; node != NULL; node = node->next)
+            {
+                upo_ht_key_list_node_t *list_node = NULL;
+                list_node = malloc(sizeof(struct upo_ht_key_list_node_s));
+                if (list_node == NULL)
+                {
+                    perror("Unable to allocate memory for a new node of the key list");
+                    abort();
+                }
+                list_node->key = node->key;
+                list_node->next = list;
+                list = list_node;
+            }
+        }
+    }
+    return list;
 }
 
 void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit, void *visit_context)
@@ -438,10 +538,22 @@ upo_ht_key_list_t upo_ht_linprob_keys(const upo_ht_linprob_t ht)
 
 void upo_ht_linprob_traverse(const upo_ht_linprob_t ht, upo_ht_visitor_t visit, void *visit_context)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (!upo_ht_linprob_is_empty(ht) && visit != NULL)
+    {
+        size_t i = 0;
+        for (i = 0; i < ht->capacity; ++i)
+        {
+            // Make sure to visit only slots with valid keys and that are
+            // neither empty slots nor tombstone slots.
+            // Note, checking if the key field is different than NULL is
+            // enough to exclude both empty slots and tombstone slots as their
+            // key field is always set to NULL.
+            if (ht->slots[i].key != NULL)
+            {
+                visit(ht->slots[i].key, ht->slots[i].value, visit_context);
+            }
+        }
+    }
 }
 
 
