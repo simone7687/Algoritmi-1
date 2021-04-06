@@ -60,3 +60,19 @@ C Pointers (Source Code) 1 - Basic Concepts/ptr_basics
 C Pointers (Source Code) 1 - Basic Concepts/ptr_vs_array
 C Pointers (Source Code) 1 - Basic Concepts/sizeof
 C Pointers (Source Code) 1 - Basic Concepts/strings
+Hash Tables Exercise #1, #2 & #3/Doxyfile
+Hash Tables Exercise #1, #2 & #3/LICENSE
+Hash Tables Exercise #1, #2 & #3/Makefile
+Hash Tables Exercise #1, #2 & #3/README.md
+Hash Tables Exercise #1, #2 & #3/test
+Hash Tables Exercise #1, #2 & #3/include
+Hash Tables Exercise #1, #2 & #3/doc
+Hash Tables Exercise #1, #2 & #3/bin
+Hash Tables Exercise #1, #2 & #3/apps
+Hash Tables Exercise #1, #2 & #3/src/utility.c
+Hash Tables Exercise #1, #2 & #3/src/hires_timer.c
+Hash Tables Exercise #1, #2 & #3/src/hires_timer_private.h
+Hash Tables Exercise #1, #2 & #3/src/io.c
+Hash Tables Exercise #1, #2 & #3/src/random.c
+Hash Tables Exercise #1, #2 & #3/src/timer.c
+Hash Tables Exercise #1, #2 & #3/src/timer_private.h
