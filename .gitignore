@@ -76,3 +76,35 @@ Hash Tables Exercise #1, #2 & #3/src/io.c
 Hash Tables Exercise #1, #2 & #3/src/random.c
 Hash Tables Exercise #1, #2 & #3/src/timer.c
 Hash Tables Exercise #1, #2 & #3/src/timer_private.h
+Sort Exercise 1/README.md
+Sort Exercise 1/Doxyfile
+Sort Exercise 1/LICENSE
+Sort Exercise 1/Makefile
+Sort Exercise 1/test
+Sort Exercise 1/src/utility.c
+Sort Exercise 1/src/timer_private.h
+Sort Exercise 1/src/timer.c
+Sort Exercise 1/src/random.c
+Sort Exercise 1/src/io.c
+Sort Exercise 1/src/hires_timer_private.h
+Sort Exercise 1/src/hires_timer.c
+Sort Exercise 1/include
+Sort Exercise 1/doc
+Sort Exercise 1/bin
+Sort Exercise 1/apps
+Abstract Data Types 1 - Stack Exercise/src/hires_timer.c
+Abstract Data Types 1 - Stack Exercise/src/hires_timer_private.h
+Abstract Data Types 1 - Stack Exercise/src/io.c
+Abstract Data Types 1 - Stack Exercise/src/random.c
+Abstract Data Types 1 - Stack Exercise/src/timer.c
+Abstract Data Types 1 - Stack Exercise/src/timer_private.h
+Abstract Data Types 1 - Stack Exercise/src/utility.c
+Abstract Data Types 1 - Stack Exercise/test
+Abstract Data Types 1 - Stack Exercise/include
+Abstract Data Types 1 - Stack Exercise/doc
+Abstract Data Types 1 - Stack Exercise/bin
+Abstract Data Types 1 - Stack Exercise/apps
+Abstract Data Types 1 - Stack Exercise/Doxyfile
+Abstract Data Types 1 - Stack Exercise/LICENSE
+Abstract Data Types 1 - Stack Exercise/Makefile
+Abstract Data Types 1 - Stack Exercise/README.md
