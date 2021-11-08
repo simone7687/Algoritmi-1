@@ -1,4 +1,6 @@
-## Algoritmi 1
+# Algoritmi 1
+
+## Sperimentazione
 
 ### Stack
 #### EX 1
@@ -141,8 +143,11 @@ valgrind --tool=memcheck --leak-check=full
 #### File
 [Open hashtable.c](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c)
 
+## Fondamenti
 ### Sort
 - [Quick Sort](https://www.geeksforgeeks.org/quick-sort/)
 - [Merge Sort](https://www.geeksforgeeks.org/merge-sort/)
 - [Insertion Sort](https://www.geeksforgeeks.org/insertion-sort/)
 - [Bubble Sort](https://www.geeksforgeeks.org/bubble-sort/)
+### Complessità Computazionale
+Complessità di una funzione [part 1](https://italiancoders.it/complessita-computazionale-parte-1/) & [part 2](https://italiancoders.it/complessita-computazionale-parte-2/)
