@@ -3,6 +3,12 @@
 ### Stack
 #### EX 1
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise)
+- [Push](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L64)
+- [Pop](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L90)
+- [Top](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L115)
+- [Is empty](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L128)
+- [Size](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L145)
+- [Clear](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L155)
 ##### File
 [Open stack.c](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c)
 #### EX 2
