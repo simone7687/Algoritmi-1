@@ -38,16 +38,16 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20
 - [Create](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L36)
 - [Destroy](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L55)
 - [Clear](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L81) & [Clear impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L64)
-- [Put](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L90)
-- [Insert](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L98)
-- [Get](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L106)
-- [Contains](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L114)
+- [Put](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L90) (Non implemantata)
+- [Insert](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L98) (Non implemantata)
+- [Get](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L106) (Non implemantata)
+- [Contains](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L114) (Non implemantata)
 - [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L126)
 - [Delete](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L145)
 - [Size](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L242)
-- [Height](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L265)
-- [Traverse in order](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L273)
-- [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L281)
+- [Height](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L265) (Non implemantata)
+- [Traverse in order](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L273) (Non implemantata)
+- [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L281) (Non implemantata)
 ```make
 make clean test
 ./test/test_bst
@@ -55,13 +55,13 @@ make clean test
 valgrind --tool=memcheck --leak-check=full ./test/test_bst
 ```
 #### EX 2
-- [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L304)
-- [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L312)
-- [Delete min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L320)
-- [Delete max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L328)
+- [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L304) (Non implemantata)
+- [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L312) (Non implemantata)
+- [Delete min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L320) (Non implemantata)
+- [Delete max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L328) (Non implemantata)
 - [Floor](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L336)
-- [Ceiling](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388)
-- [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L396)
+- [Ceiling](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388) (Non implemantata)
+- [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L396) (Non implemantata)
 - [Keys](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L404)
 - [Is bst](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L443)
 ```make
