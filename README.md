@@ -122,8 +122,8 @@ valgrind --tool=memcheck --leak-check=full
 ```
 #### EX 3 Esercizi Extra
 - [Sepchain Keys](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L652)
-- [Sepchain Traverse](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L682)
-- [Linprob Keys](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L695)
+- [Sepchain Traverse](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L682) (Non implemantata)
+- [Linprob Keys](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L695) (Non implemantata)
 - [Linprob Traverse](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L707)
 
 ```make
