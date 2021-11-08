@@ -140,3 +140,9 @@ valgrind --tool=memcheck --leak-check=full
 ```
 #### File
 [Open hashtable.c](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c)
+
+### Sort
+- [Quick Sort](https://www.geeksforgeeks.org/quick-sort/)
+- [Merge Sort](https://www.geeksforgeeks.org/merge-sort/)
+- [Insertion Sort](https://www.geeksforgeeks.org/insertion-sort/)
+- [Bubble Sort](https://www.geeksforgeeks.org/bubble-sort/)
