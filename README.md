@@ -13,6 +13,8 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Abstrac
 [Open stack.c](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c)
 #### EX 2
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 2](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise)
+- [Eval postfix](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L88)
+- [Eval lines](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L183)
 ##### File
 [Open postfix_eval.c](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c)
 
