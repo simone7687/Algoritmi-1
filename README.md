@@ -28,6 +28,16 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20
 - [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L281)
 
 #### EX 2
+- [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L304)
+- [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L312)
+- [Delete min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L320)
+- [Delete max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L328)
+- [Floor](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L336)
+- [Ceiling](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388)
+- [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L396)
+- [Keys](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L404)
+- [Is bst](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L443)
+
 #### File
 [Open bst.c](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c)
 
