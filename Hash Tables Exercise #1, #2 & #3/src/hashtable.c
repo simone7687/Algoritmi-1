@@ -29,11 +29,11 @@
 #include <upo/utility.h>
 
 
-/*** EXERCISE #1 - BEGIN of HASH TABLE with SEPARATE CHAINING ***/
+/*** EXERCISE #1 - BEGIN of HASH TABLE with SEPARATE CHAINING 
+ * Fonzioni per HASH TABLE con Concatenazione separata
+ * Spiegazione: https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7635
+ ***/
 
-/**
- * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7635
- */
 
 upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -124,7 +124,10 @@ void upo_ht_sepchain_clear(upo_ht_sepchain_t ht, int destroy_data)
     }
 }
 
-// TODO: da commentare
+/**
+ * Inserisce una nuova coppia key value solo se non esiste gia un un valore key
+ * TODO: Qual'è la differenza con upo_ht_sepchain_insert()
+ */
 void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 {
     void *old_value = NULL;
@@ -158,8 +161,8 @@ void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 }
 
 /**
- * https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=54
- * 
+ * Inserire una nuova coppia key value solo se non esiste gia un un valore key
+ * Soluzione: https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=54
  */
 void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
 {
@@ -203,7 +206,9 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
     }
 }
 
-// TODO: da commentare
+/**
+ * Ritorna il valore del nodo
+ */
 void* upo_ht_sepchain_get(const upo_ht_sepchain_t ht, const void *key)
 {
     size_t h=ht->key_hash(key,ht->capacity);
@@ -218,7 +223,9 @@ void* upo_ht_sepchain_get(const upo_ht_sepchain_t ht, const void *key)
         return NULL;
 }
 
-// TODO: da commentare
+/**
+ * TODO: Non ricordo cosa fa
+ */
 int upo_ht_sepchain_contains(const upo_ht_sepchain_t ht, const void *key)
 {
     size_t h= ht->key_hash(key,ht->capacity);
@@ -233,7 +240,9 @@ int upo_ht_sepchain_contains(const upo_ht_sepchain_t ht, const void *key)
         return 0;
 }
 
-// TODO: da commentare
+/**
+ * Elimina il nodo
+ */
 void upo_ht_sepchain_delete(upo_ht_sepchain_t ht, const void *key, int destroy_data)
 {
     size_t h=ht->key_hash(key,ht->capacity);
@@ -300,14 +309,13 @@ upo_ht_hasher_t upo_ht_sepchain_get_hasher(const upo_ht_sepchain_t ht)
 /*** EXERCISE #1 - END of HASH TABLE with SEPARATE CHAINING ***/
 
 
-/*** EXERCISE #2 - BEGIN of HASH TABLE with LINEAR PROBING ***/
 
-/**
- * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7689
- * 
- * Soluzione:
- * 
- */
+
+/*** EXERCISE #2 - BEGIN of HASH TABLE with LINEAR PROBING 
+ * Fonzioni per HASH TABLE con LINEAR PROBING
+ * Spiegazione: https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7689
+ ***/
+
 
 upo_ht_linprob_t upo_ht_linprob_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -393,7 +401,10 @@ void upo_ht_linprob_clear(upo_ht_linprob_t ht, int destroy_data)
     }
 }
 
-// TODO: da commentare
+/**
+ * Inserisce una nuova coppia key value solo se non esiste gia un un valore key
+ * TODO: Qual'è la differenza con upo_ht_linprob_insert()
+ */
 void* upo_ht_linprob_put(upo_ht_linprob_t ht, void *key, void *value)
 {
     void *old_value = NULL;
@@ -433,6 +444,10 @@ void* upo_ht_linprob_put(upo_ht_linprob_t ht, void *key, void *value)
     return old_value;
 }
 
+/**
+ * Inserire una nuova coppia key value solo se non esiste gia un un valore key
+ * Soluzione: https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=874
+ */
 void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
 {
     if (ht != NULL && ht->slots != NULL)
@@ -480,7 +495,9 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
     }
 }
 
-// TODO: da commentare
+/**
+ * Ritorna il valore del nodo
+ */
 void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
 {
     size_t h=ht->key_hash(key,ht->capacity);
@@ -494,7 +511,9 @@ void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
         return NULL;
 }
 
-// TODO: da commentare
+/**
+ * TODO: Non ricordo cosa fa
+ */
 int upo_ht_linprob_contains(const upo_ht_linprob_t ht, const void *key)
 {
     size_t h=ht->key_hash(key,ht->capacity);
@@ -512,7 +531,9 @@ int upo_ht_linprob_contains(const upo_ht_linprob_t ht, const void *key)
     return 0;
 }
 
-// TODO: da commentare
+/**
+ * Elimina il nodo
+ */
 void upo_ht_linprob_delete(upo_ht_linprob_t ht, const void *key, int destroy_data)
 {
     size_t h=ht->key_hash(key,ht->capacity);
@@ -615,15 +636,19 @@ void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
 /*** EXERCISE #2 - END of HASH TABLE with LINEAR PROBING ***/
 
 
-/*** EXERCISE #3 - BEGIN of HASH TABLE - EXTRA OPERATIONS ***/
+
+
+/*** EXERCISE #3 - BEGIN of HASH TABLE - EXTRA OPERATIONS 
+ * Esercizi Extra
+ * Spiegazione: https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7754
+ ***/
+
+/*** HASH TABLE with SEPARATE CHAINING ***/
 
 /**
- * https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7754
- * 
- * Soluzione:
- * 
+ * Ritorna una lista di tutte le key del hash
+ * Soluzione: https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2345
  */
-
 upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
 {
     upo_ht_key_list_t list = NULL;
@@ -651,22 +676,34 @@ upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
     return list;
 }
 
+/**
+ * Per ogni nodo eseguirà la funzione visit()
+ */
 void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit, void *visit_context)
 {
-    /* TO STUDENTS:
+    /** TO STUDENTS:
      *  Remove the following two lines and put here your implementation. */
     fprintf(stderr, "To be implemented!\n");
     abort();
 }
 
+/*** BEGIN of HASH TABLE with LINEAR PROBING ***/
+
+/**
+ * Ritorna una lista di tutte le key del hash
+ */
 upo_ht_key_list_t upo_ht_linprob_keys(const upo_ht_linprob_t ht)
 {
-    /* TO STUDENTS:
+    /** TO STUDENTS:
      *  Remove the following two lines and put here your implementation. */
     fprintf(stderr, "To be implemented!\n");
     abort();
 }
 
+/**
+ * Soluzione: https://youtu.be/4RKFaULBpeE?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2944
+ * Per ogni nodo eseguirà la funzione visit()
+ */
 void upo_ht_linprob_traverse(const upo_ht_linprob_t ht, upo_ht_visitor_t visit, void *visit_context)
 {
     if (!upo_ht_linprob_is_empty(ht) && visit != NULL)
@@ -691,8 +728,9 @@ void upo_ht_linprob_traverse(const upo_ht_linprob_t ht, upo_ht_visitor_t visit, 
 /*** EXERCISE #3 - END of HASH TABLE - EXTRA OPERATIONS ***/
 
 
-/*** BEGIN of HASH FUNCTIONS ***/
 
+
+/*** BEGIN of HASH FUNCTIONS ***/
 
 size_t upo_ht_hash_int_div(const void *x, size_t m)
 {
