@@ -48,15 +48,19 @@ void upo_stack_destroy(upo_stack_t stack, int destroy_data)
     }
 }
 
+
+
+
 /**
+ * 
  * https://youtu.be/8f764sOcA5c?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2600
- * 
- * 
- * Soluzione:
- * https://youtu.be/aM6ZzJJ0u3o?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=13
  */
 
-// aggiungere un nodo alla testa
+
+/**
+ * Aggiungere un nodo alla testa
+ * Soluzione: https://youtu.be/aM6ZzJJ0u3o?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=13
+ */
 void upo_stack_push(upo_stack_t stack, void *data)
 {
     // Implementazione
@@ -80,7 +84,9 @@ void upo_stack_push(upo_stack_t stack, void *data)
     }
 }
 
-// rimuovera un nodo dalla lista
+/**
+ * Rimuovera un nodo dalla lista
+ */
 void upo_stack_pop(upo_stack_t stack, int destroy_data)
 {
     // Implementazione
@@ -103,7 +109,9 @@ void upo_stack_pop(upo_stack_t stack, int destroy_data)
     }
 }
 
-// Ritorna la data dal top se non è NULL
+/**
+ * Ritorna la data dal top se non è NULL
+ */
 void* upo_stack_top(const upo_stack_t stack)
 {
     // Implementazione
@@ -114,7 +122,9 @@ void* upo_stack_top(const upo_stack_t stack)
     return stack->top->data;
 }
 
-// controlla se è vuota
+/**
+ * Controlla se è vuota
+ */
 int upo_stack_is_empty(const upo_stack_t stack)
 {
     // Implementazione
@@ -129,7 +139,9 @@ int upo_stack_is_empty(const upo_stack_t stack)
     return 0;
 }
 
-// ritorna la dimensione dello stack
+/**
+ * Ritorna la dimensione dello stack
+ */
 size_t upo_stack_size(const upo_stack_t stack)
 {
     // Implementazione
