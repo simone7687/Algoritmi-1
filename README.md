@@ -9,12 +9,26 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Abstrac
 - [Is empty](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L128)
 - [Size](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L145)
 - [Clear](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L155)
+```make
+make clean test
+./test/test_stack
+
+valgrind --tool=memcheck --leak-check=full ./test/test_stack
+```
 ##### File
 [Open stack.c](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c)
 #### EX 2
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 2](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise)
 - [Eval postfix](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L91)
 - [Eval lines](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L186)
+```make
+make clean apps
+./apps/postfix_eval
+./apps/postfix_eval -f data/postfix.txt
+
+valgrind --tool=memcheck --leak-check=full
+    ./apps/postfix_eval -f data/postfix.txt
+```
 ##### File
 [Open postfix_eval.c](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c)
 
@@ -34,7 +48,12 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20
 - [Height](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L265)
 - [Traverse in order](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L273)
 - [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L281)
+```make
+make clean test
+./test/test_bst
 
+valgrind --tool=memcheck --leak-check=full ./test/test_bst
+```
 #### EX 2
 - [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L304)
 - [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L312)
@@ -45,7 +64,12 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20
 - [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L396)
 - [Keys](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L404)
 - [Is bst](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L443)
+```make
+make clean test
+./test/test_bst_more
 
+valgrind --tool=memcheck --leak-check=full ./test/test_bst_more
+```
 #### File
 [Open bst.c](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c)
 
