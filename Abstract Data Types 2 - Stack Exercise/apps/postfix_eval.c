@@ -37,8 +37,9 @@
 
 #define MAX_LINE_LEN 256
 
-
-// TODO: .....................
+/**
+ * TODO: .....................
+ */
 int isoperator(char op) 
 {
     return (op == '+' ||
@@ -49,7 +50,9 @@ int isoperator(char op)
             op == '^');
 }
 
-// TODO: .....................
+/**
+ * TODO: .....................
+ */
 long int* eval(char op, long int op1, long int op2) 
 {
     long int* tmpRes = (long int*)malloc(sizeof(long int));
@@ -70,9 +73,7 @@ long int* eval(char op, long int op1, long int op2)
 }
 
 /**
- * https://youtu.be/8f764sOcA5c?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2870
- * 
- * convertire una espressine infisso inpost fisso:
+ * Convertire una espressine infisso inpost fisso:
  * 
  * 34-5+
  * 3-4+5
@@ -84,6 +85,8 @@ long int* eval(char op, long int op1, long int op2)
  * 1+2*(3-4)
  * 
  * ritorna il risultato dell'espressione
+ * 
+ * Soluzione: https://youtu.be/8f764sOcA5c?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2870
  */
 int eval_postfix(const char *expr, long *res)
 {
