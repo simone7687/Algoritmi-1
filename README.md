@@ -1,5 +1,22 @@
 ## Algoritmi 1
 
+### Stack
+#### EX 1
+Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise)
+##### File
+[Open stack.c](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c)
+#### EX 2
+Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 2](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise)
+##### File
+[Open postfix_eval.c](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c)
+
+### Binary Search Trees
+Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232)
+#### EX 1
+#### EX 2
+#### File
+[Open bst.c](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c)
+
 ### Hash
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Hash](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233)
 #### EX 1 HASH TABLE con Concatenazione separata
