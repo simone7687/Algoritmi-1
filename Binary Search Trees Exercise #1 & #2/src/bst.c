@@ -24,15 +24,15 @@
 #include <stdlib.h>
 
 
-/**** EXERCISE #1 - BEGIN of FUNDAMENTAL OPERATIONS ****/
+/**** EXERCISE #1 - BEGIN of FUNDAMENTAL OPERATIONS 
+ * Spiegazione: https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2732
+ ****/
+
 
 /**
- * https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2732
  * 
- * Soluzione:
- * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu
+ * Soluzione: https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu
  */
-
 upo_bst_t upo_bst_create(upo_bst_comparator_t key_cmp)
 {
     upo_bst_t tree = malloc(sizeof(struct upo_bst_s));
@@ -120,9 +120,8 @@ int upo_bst_contains(const upo_bst_t tree, const void *key)
 }
 
 /**
- * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1398
- * ritorna il dodo maggiore dopo *node
- * è semplice prendel'utimo noo a destra
+ * Ritorna il dodo maggiore dopo *node (è semplice prende l'utimo nodo a destra)
+ * Soluzione: https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1398
  */
 upo_bst_node_t* upo_bst_max_impl(upo_bst_node_t *node)
 {
@@ -243,7 +242,7 @@ upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_b
 size_t upo_bst_size_impl(const upo_bst_node_t *node);
 
 /**
- * restituisce il numero di nodi
+ * Restituisce il numero di nodi
  */
 size_t upo_bst_size(const upo_bst_t tree)
 {
@@ -291,16 +290,17 @@ int upo_bst_is_empty(const upo_bst_t tree)
 /**** EXERCISE #1 - END of FUNDAMENTAL OPERATIONS ****/
 
 
-/**** EXERCISE #2 - BEGIN of EXTRA OPERATIONS ****/
+
+
+/**** EXERCISE #2 - BEGIN of EXTRA OPERATIONS 
+ * Spiegazione: https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3084
+ ****/
 
 
 /**
- * https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=3084
  * 
- * Soluzione:
- * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
+ * Soluzione: https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
  */
-
 void* upo_bst_min(const upo_bst_t tree)
 {
     /* TO STUDENTS:
@@ -336,9 +336,8 @@ void upo_bst_delete_max(upo_bst_t tree, int destroy_data)
 const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp);
 
 /**
- * https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
- * restituisce la piu chiave maggiore, minore uguale alla chiave passata per parametro
- * se non esiste o l'albero è nullo ritorna null
+ * Restituisce la piu chiave maggiore, minore uguale alla chiave passata per parametro, se non esiste o l'albero è nullo ritorna null
+ * Soluzione: https://youtu.be/-2-AgnvImrM?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=1749
  */
 void* upo_bst_floor(const upo_bst_t tree, const void *key)
 {
@@ -405,7 +404,7 @@ upo_bst_key_list_t upo_bst_keys_range(const upo_bst_t tree, const void *low_key,
 void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp, upo_bst_key_list_t *list);
 
 /**
- * ritorno una lista di tutti i nodi dell'albero
+ * Ritorna una lista di tutti i nodi dell'albero
  */
 upo_bst_key_list_t upo_bst_keys(const upo_bst_t tree)
 {
@@ -503,7 +502,6 @@ int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const v
     return upo_bst_is_bst_impl(node->left, min_key, node->key, key_cmp)
     && upo_bst_is_bst_impl(node->right, node->key, max_key, key_cmp);
 }
-
 
 
 /**** EXERCISE #2 - END of EXTRA OPERATIONS ****/
