@@ -117,7 +117,7 @@ void* upo_bst_put(upo_bst_t tree, void *key, void *value)
 
     if (node == NULL)
     {
-        /* Key not found -> Add a new node to the head of the list*/
+        /* Key not found -> Add a new node*/
         node = malloc(sizeof(upo_bst_node_t));
         if (node == NULL)
         {
