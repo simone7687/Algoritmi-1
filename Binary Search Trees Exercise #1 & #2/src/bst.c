@@ -26,6 +26,7 @@
 
 /**** EXERCISE #1 - BEGIN of FUNDAMENTAL OPERATIONS 
  * Spiegazione: https://youtu.be/8fcbsu9RVYg?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=2732
+ * http://cslibrary.stanford.edu/110/BinaryTrees.html
  ****/
 
 
@@ -52,6 +53,7 @@ upo_bst_t upo_bst_create(upo_bst_comparator_t key_cmp)
     return tree;
 }
 
+// TODO: Differenza tra destroy e clear???????
 void upo_bst_destroy(upo_bst_t tree, int destroy_data)
 {
     if (tree != NULL)
@@ -77,7 +79,6 @@ void upo_bst_clear_impl(upo_bst_node_t *node, int destroy_data)
         free(node);
     }
 }
-
 void upo_bst_clear(upo_bst_t tree, int destroy_data)
 {
     if (tree != NULL)
@@ -89,18 +90,95 @@ void upo_bst_clear(upo_bst_t tree, int destroy_data)
 
 void* upo_bst_put(upo_bst_t tree, void *key, void *value)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    void *old_value = NULL;
+
+    upo_bst_node_t *node = tree->root;
+    upo_bst_node_t *prev_node = tree->root;
+
+    while(node != NULL && tree->key_cmp(key,node->key) != 0)
+    {
+        if (tree->key_cmp(key,node->key) < 0)
+        {
+            node = node->left;
+            prev_node = node;
+        }
+        else if (tree->key_cmp(key,node->key) > 0)
+        {
+            node = node->right;
+            prev_node = node;
+        }
+    }
+
+    if (node == NULL)
+    {
+        /* Key not found -> Add a new node to the head of the list*/
+        node = malloc(sizeof(upo_bst_node_t));
+        if (node == NULL)
+        {
+            perror("Unable to allocate memory for a node of the list of collisions");
+            abort();
+        }
+        node->key = key;
+        node->value = value;
+        node->left = NULL;
+        node->right = NULL;
+        if (tree->key_cmp(key,prev_node->key) < 0)
+        {
+            node->left = node;
+        }
+        else
+        {
+            node->right = node;
+        }
+    }
+    else
+    {
+        old_value = node->value;
+        node->value = value;
+    }
 }
 
 void upo_bst_insert(upo_bst_t tree, void *key, void *value)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    upo_bst_node_t *node = tree->root;
+    upo_bst_node_t *prev_node = tree->root;
+
+    while(node != NULL && tree->key_cmp(key,node->key) != 0)
+    {
+        if (tree->key_cmp(key,node->key) < 0)
+        {
+            node = node->left;
+            prev_node = node;
+        }
+        else if (tree->key_cmp(key,node->key) > 0)
+        {
+            node = node->right;
+            prev_node = node;
+        }
+    }
+
+    if (node == NULL)
+    {
+        /* Key not found -> Add a new node to the head of the list*/
+        node = malloc(sizeof(upo_bst_node_t));
+        if (node == NULL)
+        {
+            perror("Unable to allocate memory for a node of the list of collisions");
+            abort();
+        }
+        node->key = key;
+        node->value = value;
+        node->left = NULL;
+        node->right = NULL;
+        if (tree->key_cmp(key,prev_node->key) < 0)
+        {
+            node->left = node;
+        }
+        else
+        {
+            node->right = node;
+        }
+    }
 }
 
 void* upo_bst_get(const upo_bst_t tree, const void *key)
