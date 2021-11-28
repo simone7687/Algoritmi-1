@@ -100,12 +100,18 @@ void* upo_bst_put(upo_bst_t tree, void *key, void *value)
         if (tree->key_cmp(key,node->key) < 0)
         {
             node = node->left;
-            prev_node = node;
+            if (node != NULL)
+            {
+                prev_node = node->left;
+            }
         }
         else if (tree->key_cmp(key,node->key) > 0)
         {
             node = node->right;
-            prev_node = node;
+            if (node != NULL)
+            {
+                prev_node = node->right;
+            }
         }
     }
 
@@ -122,13 +128,19 @@ void* upo_bst_put(upo_bst_t tree, void *key, void *value)
         node->value = value;
         node->left = NULL;
         node->right = NULL;
-        if (tree->key_cmp(key,prev_node->key) < 0)
+
+        // TODO: ERRORE: Segmentation fault
+        if (tree->root == NULL)
         {
-            node->left = node;
+            tree->root = node
         }
-        else
+        else if (tree->key_cmp(key,prev_node->key) < 0)
         {
-            node->right = node;
+            prev_node->left = node;
+        }
+        else if (tree->key_cmp(key,prev_node->key) > 0)
+        {
+            prev_node->right = node;
         }
     }
     else
@@ -136,6 +148,7 @@ void* upo_bst_put(upo_bst_t tree, void *key, void *value)
         old_value = node->value;
         node->value = value;
     }
+    return old_value;
 }
 
 void upo_bst_insert(upo_bst_t tree, void *key, void *value)
@@ -244,12 +257,11 @@ upo_bst_node_t* upo_bst_delete_impl(upo_bst_node_t *node, const void *key, upo_b
 {
     if (node != NULL)
     {
-        int cmp = key_cmp(key, node->key);
-        if (cmp < 0)
+        if (key_cmp(key,node->key) < 0)
         {
             node->left = upo_bst_delete_impl(node->left, key, key_cmp, destroy_data);
         }
-        else if (cmp > 0)
+        else if (key_cmp(key,node->key) > 0)
         {
             node->right = upo_bst_delete_impl(node->right, key, key_cmp, destroy_data);
         }
