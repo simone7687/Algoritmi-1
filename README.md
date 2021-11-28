@@ -28,8 +28,7 @@ make clean apps
 ./apps/postfix_eval
 ./apps/postfix_eval -f data/postfix.txt
 
-valgrind --tool=memcheck --leak-check=full
-    ./apps/postfix_eval -f data/postfix.txt
+valgrind --tool=memcheck --leak-check=full ./apps/postfix_eval -f data/postfix.txt
 ```
 ##### File
 [Open postfix_eval.c](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c)
@@ -97,8 +96,7 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Hash](/Hash%20Tab
 make clean test
 ./test/test_hashtable_sepchain
 
-valgrind --tool=memcheck --leak-check=full
-    ./test/test_hashtable_sepchain
+valgrind --tool=memcheck --leak-check=full ./test/test_hashtable_sepchain
 ```
 #### EX 2 HASH TABLE con LINEAR PROBING
 - [Create](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L320)
@@ -119,8 +117,7 @@ valgrind --tool=memcheck --leak-check=full
 make clean test
 ./test/test_hashtable_linprob
 
-valgrind --tool=memcheck --leak-check=full
-    ./test/test_hashtable_linprob
+valgrind --tool=memcheck --leak-check=full ./test/test_hashtable_linprob
 ```
 #### EX 3 Esercizi Extra
 - [Sepchain Keys](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c#L652)
@@ -132,13 +129,11 @@ valgrind --tool=memcheck --leak-check=full
 make clean test
 ./test/test_hashtable_sepchain_more
 
-valgrind --tool=memcheck --leak-check=full
-    ./test/test_hashtable_sepchain_more
+valgrind --tool=memcheck --leak-check=full ./test/test_hashtable_sepchain_more
 
 ./test/test_hashtable_linprob_more
 
-valgrind --tool=memcheck --leak-check=full
-    ./test/test_hashtable_linprob_more
+valgrind --tool=memcheck --leak-check=full ./test/test_hashtable_linprob_more
 ```
 #### File
 [Open hashtable.c](/Hash%20Tables%20Exercise%20%231%2C%20%232%20%26%20%233/src/hashtable.c)
