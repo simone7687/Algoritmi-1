@@ -351,12 +351,21 @@ size_t upo_bst_size_impl(const upo_bst_node_t *node)
     return 1 + upo_bst_size_impl(node->left) + upo_bst_size_impl(node->right);
 }
 
+size_t upo_bst_height_impl (upo_bst_node_t* node);
+
 size_t upo_bst_height(const upo_bst_t tree)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (tree!= NULL)
+        return upo_bst_height_impl(tree->root);
+    return 0;
+}
+size_t upo_bst_height_impl (upo_bst_node_t* node)
+{
+    if (node == NULL || (node->left== NULL && node->right ==NULL))
+    	return 0;
+	else if (upo_bst_height_impl(node->right) > upo_bst_height_impl(node->left))
+		return 1+ upo_bst_height_impl(node->right);
+	return 1 + upo_bst_height_impl(node->left);
 }
 
 void upo_bst_traverse_in_order(const upo_bst_t tree, upo_bst_visitor_t visit, void *visit_arg)
