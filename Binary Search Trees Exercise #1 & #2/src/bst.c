@@ -88,118 +88,114 @@ void upo_bst_clear(upo_bst_t tree, int destroy_data)
     }
 }
 
+upo_bst_node_t* upo_bst_put_impl (upo_bst_node_t* node , void* key, void* value, void* oldv, upo_bst_comparator_t cmp);
+
 void* upo_bst_put(upo_bst_t tree, void *key, void *value)
 {
-    void *old_value = NULL;
+	if (tree != NULL) {
+		void* oldv = NULL;
 
-    upo_bst_node_t *node = tree->root;
-    upo_bst_node_t *prev_node = tree->root;
+		upo_bst_comparator_t cmp = upo_bst_get_comparator(tree);
 
-    while(node != NULL && tree->key_cmp(key,node->key) != 0)
-    {
-        if (tree->key_cmp(key,node->key) < 0)
-        {
-            node = node->left;
-            if (node != NULL)
-            {
-                prev_node = node->left;
-            }
-        }
-        else if (tree->key_cmp(key,node->key) > 0)
-        {
-            node = node->right;
-            if (node != NULL)
-            {
-                prev_node = node->right;
-            }
-        }
-    }
-
-    if (node == NULL)
-    {
-        /* Key not found -> Add a new node*/
-        node = malloc(sizeof(upo_bst_node_t));
-        if (node == NULL)
-        {
-            perror("Unable to allocate memory for a node of the list of collisions");
-            abort();
-        }
-        node->key = key;
-        node->value = value;
-        node->left = NULL;
-        node->right = NULL;
-
-        // TODO: ERRORE: Segmentation fault
-        if (tree->root == NULL)
-        {
-            tree->root = node
-        }
-        else if (tree->key_cmp(key,prev_node->key) < 0)
-        {
-            prev_node->left = node;
-        }
-        else if (tree->key_cmp(key,prev_node->key) > 0)
-        {
-            prev_node->right = node;
-        }
-    }
-    else
-    {
-        old_value = node->value;
-        node->value = value;
-    }
-    return old_value;
+		tree->root = upo_bst_put_impl(tree->root, key, value, oldv, cmp);
+		return oldv;
+	}
+	return NULL;
 }
+upo_bst_node_t* upo_bst_put_impl (upo_bst_node_t* node , void* key, void* value, void* oldv, upo_bst_comparator_t cmp)
+{
+	oldv = NULL;
+	if (node == NULL)
+	{
+   		node = (upo_bst_node_t*) malloc ( sizeof(struct upo_bst_node_s));
+		node->key = key;
+		node->value = value;			
+        node->value = value;
+		node->value = value;			
+        node->value = value;
+		node->value = value;			
+        node->left = NULL;
+		node->right = NULL;
+        return node;
+	}
+	else if (cmp (key ,node->key) < 0)
+		node->left = upo_bst_put_impl (node->left, key, value, oldv, cmp);
+	else if (cmp (key ,node->key) > 0)
+		node->right = upo_bst_put_impl (node->right, key, value, oldv, cmp);
+	else
+	{
+		oldv = node->value;
+		node->value= value;
+	}
+	return node;
+}
+
+void *upo_bst_insert_impl(upo_bst_node_t *node, void *key, void *value, upo_bst_comparator_t keycmp);
 
 void upo_bst_insert(upo_bst_t tree, void *key, void *value)
 {
-    upo_bst_node_t *node = tree->root;
-    upo_bst_node_t *prev_node = tree->root;
-
-    while(node != NULL && tree->key_cmp(key,node->key) != 0)
+    if (tree != NULL)
     {
-        if (tree->key_cmp(key,node->key) < 0)
-        {
-            node = node->left;
-            prev_node = node;
-        }
-        else if (tree->key_cmp(key,node->key) > 0)
-        {
-            node = node->right;
-            prev_node = node;
-        }
-    }
-
-    if (node == NULL)
-    {
-        /* Key not found -> Add a new node to the head of the list*/
-        node = malloc(sizeof(upo_bst_node_t));
-        if (node == NULL)
-        {
-            perror("Unable to allocate memory for a node of the list of collisions");
-            abort();
-        }
-        node->key = key;
-        node->value = value;
-        node->left = NULL;
-        node->right = NULL;
-        if (tree->key_cmp(key,prev_node->key) < 0)
-        {
-            node->left = node;
-        }
-        else
-        {
-            node->right = node;
-        }
+		tree->root = upo_bst_insert_impl(tree->root, key, value, tree->key_cmp);
     }
 }
+void *upo_bst_insert_impl(upo_bst_node_t *node, void *key, void *value, upo_bst_comparator_t keycmp)
+    {
+        if (node == NULL)
+        {
+        //allocate memory for a new node
+		node = (upo_bst_node_t*) malloc(sizeof(struct upo_bst_node_s));
+        node->key = key;
+        node->value = value;
+        //childrens are null
+        node->left = NULL;
+        node->right = NULL;
+        }
+    //calls itself recursively until it finds a NULL node
+    else if (keycmp(key, node->key) < 0) //key is smaller
+        {
+        node->left = upo_bst_insert_impl (node->left, key, value, keycmp);
+        }
+	else if(keycmp(key, node->key) > 0) //key is bigger
+        {
+        node->right = upo_bst_insert_impl (node->right, key, value, keycmp);
+        }
+
+	return node;
+}
+
+void* upo_bst_get_impl(upo_bst_node_t *node, void *key, upo_bst_comparator_t keycmp);
 
 void* upo_bst_get(const upo_bst_t tree, const void *key)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+	if (tree != NULL)
+	{
+		upo_bst_comparator_t cmp = upo_bst_get_comparator(tree);
+		upo_bst_node_t* node = upo_bst_get_impl (tree->root, key, cmp);
+		
+		if (node != NULL)
+			return node->value;
+	}
+	return NULL;
+}
+void* upo_bst_get_impl(upo_bst_node_t *node, void *key, upo_bst_comparator_t keycmp)
+    {
+        if (node == NULL)
+        {
+        return NULL;
+        }
+
+    //key is smalled, go to the left
+    if (keycmp(key, node->key) < 0)
+        {
+        return upo_bst_get_impl(node->left, key, keycmp);
+        }
+    else if (keycmp(key, node->key) > 0)
+        {
+        //key is bigger, go to the right
+        return upo_bst_get_impl(node->right, key, keycmp);
+        }
+    else return node;
 }
 
 int upo_bst_contains(const upo_bst_t tree, const void *key)
