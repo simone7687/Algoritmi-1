@@ -200,10 +200,13 @@ void* upo_bst_get_impl(upo_bst_node_t *node, void *key, upo_bst_comparator_t key
 
 int upo_bst_contains(const upo_bst_t tree, const void *key)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+	if (tree != NULL)
+	{
+        upo_bst_comparator_t cmp = upo_bst_get_comparator(tree);
+		if (upo_bst_get_impl (tree->root, key, cmp) != NULL)
+			return 1;
+	} 
+	return 0;
 }
 
 /**
