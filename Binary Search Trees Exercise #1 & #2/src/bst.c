@@ -378,10 +378,9 @@ void upo_bst_traverse_in_order(const upo_bst_t tree, upo_bst_visitor_t visit, vo
 
 int upo_bst_is_empty(const upo_bst_t tree)
 {
-    /* TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+	if ((tree == NULL) || (tree->root == NULL))
+		return 1;
+	return 0;
 }
 
 
