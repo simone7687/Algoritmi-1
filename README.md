@@ -39,16 +39,16 @@ Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20
 - [Create](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L35)
 - [Destroy](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L55)
 - [Clear](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L80) & [Clear impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L64)
-- [Put](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L91) (Non implemantata)
-- [Insert](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L134) (Non implemantata)
-- [Get](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L168) (Non implemantata)
-- [Contains](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L201) (Non implemantata)
+- [Put](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L91)
+- [Insert](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L134)
+- [Get](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L168)
+- [Contains](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L201)
 - [upo_bst_max_impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L216)
 - [Delete](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L244)
 - [Size](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L336)
-- [Height](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L356) (Non implemantata)
-- [Traverse in order](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L373) (Non implemantata)
-- [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388) (Non implemantata)
+- [Height](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L356)
+- [Traverse in order](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L373)
+- [Is empty](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388)
 ```make
 make clean test
 ./test/test_bst
