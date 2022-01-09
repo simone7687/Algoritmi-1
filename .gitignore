@@ -242,3 +242,33 @@ Sort Exercise 3/test/test_hires_timer.c
 Sort Exercise 2/Makefile
 Sort Exercise 2/apps/mk/use_timer.mk
 Sort Exercise 3/test/test_timer.c
+Stack Exercise - Abstract Data Types/apps/mk
+Stack Exercise - Abstract Data Types/doc
+Stack Exercise - Abstract Data Types/test/mk/timer.mk
+Stack Exercise - Abstract Data Types/test/mk/hires_timer.mk
+Stack Exercise - Abstract Data Types/src/utility.c
+Stack Exercise - Abstract Data Types/test/Makefile
+Stack Exercise - Abstract Data Types/src/timer_private.h
+Stack Exercise - Abstract Data Types/src/timer.c
+Stack Exercise - Abstract Data Types/src/random.c
+Stack Exercise - Abstract Data Types/src/hires_timer_private.h
+Stack Exercise - Abstract Data Types/src/hires_timer.c
+Stack Exercise - Abstract Data Types/Makefile
+Stack Exercise - Abstract Data Types/LICENSE
+Stack Exercise - Abstract Data Types/README.md
+Stack Exercise - Abstract Data Types/include/upo/utility.h
+Stack Exercise - Abstract Data Types/src/io.c
+Stack Exercise - Abstract Data Types/include/upo/macro.h
+Stack Exercise - Abstract Data Types/include/upo/timer.h
+Stack Exercise - Abstract Data Types/include/upo/random.h
+Stack Exercise - Abstract Data Types/include/upo/io.h
+Stack Exercise - Abstract Data Types/include/upo/hires_timer.h
+Stack Exercise - Abstract Data Types/include/upo/error.h
+Stack Exercise - Abstract Data Types/Doxyfile
+Stack Exercise - Abstract Data Types/bin/mk/dummy.mk
+Stack Exercise - Abstract Data Types/test/mk/dummy.mk
+Stack Exercise - Abstract Data Types/test/test_hires_timer.c
+Stack Exercise - Abstract Data Types/bin/Makefile
+Stack Exercise - Abstract Data Types/test/test_timer.c
+Stack Exercise - Abstract Data Types/apps/use_timer.c
+Stack Exercise - Abstract Data Types/apps/Makefile
