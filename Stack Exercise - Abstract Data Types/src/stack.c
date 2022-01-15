@@ -67,7 +67,6 @@ void upo_stack_push(upo_stack_t stack, void *data)
     if (stack != NULL)
     {
         // si alloca dello spazio per il nuovo nodo
-        // TODO upo_stack_node_t: cosa è?
         upo_stack_node_t *node = malloc(sizeof(upo_stack_node_t));
         if (node == NULL)
         {
@@ -80,7 +79,7 @@ void upo_stack_push(upo_stack_t stack, void *data)
         node->next = stack->top;
         stack->top = node;
         // TODO IMPORTANTE: aggiornare la dimensione dello stack
-        stack->size += 1;
+	    stack->size ++;
     }
 }
 

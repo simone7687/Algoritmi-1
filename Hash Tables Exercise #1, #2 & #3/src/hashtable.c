@@ -19,7 +19,6 @@
  * along with UPOalglib.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <assert.h>
 #include "hashtable_private.h"
 #include <math.h>
@@ -28,12 +27,10 @@
 #include <upo/error.h>
 #include <upo/utility.h>
 
-
 /*** EXERCISE #1 - BEGIN of HASH TABLE with SEPARATE CHAINING 
  * Fonzioni per HASH TABLE con Concatenazione separata
  * Spiegazione: https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7635
  ***/
-
 
 upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -41,8 +38,8 @@ upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo
     size_t i = 0;
 
     /* preconditions */
-    assert( key_hash != NULL );
-    assert( key_cmp != NULL );
+    assert(key_hash != NULL);
+    assert(key_cmp != NULL);
 
     /* Allocate memory for the hash table type */
     ht = malloc(sizeof(struct upo_ht_sepchain_s));
@@ -55,7 +52,7 @@ upo_ht_sepchain_t upo_ht_sepchain_create(size_t m, upo_ht_hasher_t key_hash, upo
     if (m > 0)
     {
         /* Allocate memory for the array of slots */
-        ht->slots = malloc(m*sizeof(upo_ht_sepchain_slot_t));
+        ht->slots = malloc(m * sizeof(upo_ht_sepchain_slot_t));
         if (ht->slots == NULL)
         {
             perror("Unable to allocate memory for slots of the Hash Table with Separate Chaining");
@@ -323,8 +320,8 @@ upo_ht_linprob_t upo_ht_linprob_create(size_t m, upo_ht_hasher_t key_hash, upo_h
     size_t i = 0;
 
     /* preconditions */
-    assert( key_hash != NULL );
-    assert( key_cmp != NULL );
+    assert(key_hash != NULL);
+    assert(key_cmp != NULL);
 
     /* Allocate memory for the hash table type */
     ht = malloc(sizeof(struct upo_ht_linprob_s));
@@ -580,13 +577,13 @@ size_t upo_ht_linprob_capacity(const upo_ht_linprob_t ht)
 
 double upo_ht_linprob_load_factor(const upo_ht_linprob_t ht)
 {
-    return upo_ht_linprob_size(ht) / (double) upo_ht_linprob_capacity(ht);
+    return upo_ht_linprob_size(ht) / (double)upo_ht_linprob_capacity(ht);
 }
 
 void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
 {
     /* preconditions */
-    assert( n > 0 );
+    assert(n > 0);
 
     if (ht != NULL)
     {
@@ -632,11 +629,7 @@ void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
     }
 }
 
-
 /*** EXERCISE #2 - END of HASH TABLE with LINEAR PROBING ***/
-
-
-
 
 /*** EXERCISE #3 - BEGIN of HASH TABLE - EXTRA OPERATIONS 
  * Esercizi Extra
@@ -681,10 +674,21 @@ upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
  */
 void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit, void *visit_context)
 {
-    /** TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (ht != NULL)
+    {
+        size_t i = 0;
+        upo_ht_sepchain_list_node_t *node = NULL;
+        for (i = 0; i < ht->capacity; i++)
+            if (ht->slots[i].head != NULL)
+            {
+                node = ht->slots[i].head;
+                while (node != NULL)
+                {
+                    visit(node->key, node->value, visit_arg);
+                    node = node->next;
+                }
+            }
+    }
 }
 
 /*** BEGIN of HASH TABLE with LINEAR PROBING ***/
@@ -694,10 +698,31 @@ void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit
  */
 upo_ht_key_list_t upo_ht_linprob_keys(const upo_ht_linprob_t ht)
 {
-    /** TO STUDENTS:
-     *  Remove the following two lines and put here your implementation. */
-    fprintf(stderr, "To be implemented!\n");
-    abort();
+    if (ht != NULL)
+    {
+        upo_ht_key_list_t list = NULL, temp = NULL;
+        size_t i = 0;
+        for (i = 0; i < ht->capacity; i++)
+            if (ht->slots[i].key != NULL && !ht->slots[i].tombstone)
+            {
+                if (list == NULL)
+                {
+                    list = malloc(sizeof(upo_ht_key_list_node_t));
+                    list->key = ht->slots[i].key;
+                    list->next = NULL;
+                    temp = list;
+                }
+                else
+                {
+                    temp->next = malloc(sizeof(upo_ht_key_list_node_t));
+                    temp = temp->next;
+                    temp->key = ht->slots[i].key;
+                    temp->next = NULL;
+                }
+            }
+        return list;
+    }
+    return NULL;
 }
 
 /**
@@ -724,55 +749,48 @@ void upo_ht_linprob_traverse(const upo_ht_linprob_t ht, upo_ht_visitor_t visit, 
     }
 }
 
-
 /*** EXERCISE #3 - END of HASH TABLE - EXTRA OPERATIONS ***/
-
-
-
 
 /*** BEGIN of HASH FUNCTIONS ***/
 
 size_t upo_ht_hash_int_div(const void *x, size_t m)
 {
     /* preconditions */
-    assert( x != NULL );
-    assert( m > 0 );
+    assert(x != NULL);
+    assert(m > 0);
 
-    return *((int*) x) % m;
+    return *((int *)x) % m;
 }
 
 size_t upo_ht_hash_int_mult(const void *x, double a, size_t m)
 {
     /* preconditions */
-    assert( x != NULL );
-    assert( a > 0 && a < 1 );
-    assert( m > 0 );
+    assert(x != NULL);
+    assert(a > 0 && a < 1);
+    assert(m > 0);
 
-    return floor( m * fmod(a * *((int*) x), 1.0) );
+    return floor(m * fmod(a * *((int *)x), 1.0));
 }
 
 size_t upo_ht_hash_int_mult_knuth(const void *x, size_t m)
 {
-    return upo_ht_hash_int_mult(x, 0.5*(sqrt(5)-1), m);
+    return upo_ht_hash_int_mult(x, 0.5 * (sqrt(5) - 1), m);
 }
 
 size_t upo_ht_hash_str(const void *x, size_t h0, size_t a, size_t m)
 {
-    const char *s = NULL;
+    const char *s = x;
     size_t h = h0; 
 
     /* preconditions */
-    assert( x != NULL );
-    assert( m > 0 );
-/*
-    assert( a < m );
-*/
-    assert( h0 < m );
+    assert(x != NULL);
+    assert(m > 0);
+    // assert( a < m );
+    assert(h0 < m);
 
-    s = *((const char**) x);
     for (; *s; ++s)
     {
-        h = (a*h + *s) % m;
+        h = (a * h + *s) % m;
     }
 
     return h;
@@ -785,18 +803,15 @@ size_t upo_ht_hash_str_djb2(const void *x, size_t m)
 
 size_t upo_ht_hash_str_djb2a(const void *x, size_t m)
 {
-    const char *s = NULL;
+    const char *s = x;
     size_t h = 5381U; 
 
     /* preconditions */
-    assert( x != NULL );
-    assert( m > 0 );
+    assert(x != NULL);
+    assert(m > 0);
 
-    s = *((const char**) x);
     for (; *s; ++s)
-    {
-        h = (33U*h ^ *s) % m;
-    }
+        h = (33U * h ^ *s) % m;
 
     return h;
 }
