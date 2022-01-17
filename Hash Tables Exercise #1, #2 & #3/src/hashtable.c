@@ -305,14 +305,10 @@ upo_ht_hasher_t upo_ht_sepchain_get_hasher(const upo_ht_sepchain_t ht)
 
 /*** EXERCISE #1 - END of HASH TABLE with SEPARATE CHAINING ***/
 
-
-
-
 /*** EXERCISE #2 - BEGIN of HASH TABLE with LINEAR PROBING 
  * Fonzioni per HASH TABLE con LINEAR PROBING
  * Spiegazione: https://youtu.be/8X7cZAALhOU?list=PL6EeG-tt2Es75K50cuoPYjXdNbJR4yduu&t=7689
  ***/
-
 
 upo_ht_linprob_t upo_ht_linprob_create(size_t m, upo_ht_hasher_t key_hash, upo_ht_comparator_t key_cmp)
 {
@@ -334,7 +330,7 @@ upo_ht_linprob_t upo_ht_linprob_create(size_t m, upo_ht_hasher_t key_hash, upo_h
     /* Allocate memory for the array of slots */
     if (m > 0)
     {
-        ht->slots = malloc(m*sizeof(upo_ht_linprob_slot_t));
+        ht->slots = malloc(m * sizeof(upo_ht_linprob_slot_t));
         if (ht->slots == NULL)
         {
             perror("Unable to allocate memory for slots of the Hash Table with Separate Chaining");
@@ -455,7 +451,7 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
         /* Double the size if 50% is full */
         if (upo_ht_linprob_load_factor(ht) >= 0.5)
         {
-            upo_ht_linprob_resize(ht, 2*ht->capacity);
+            upo_ht_linprob_resize(ht, 2 * ht->capacity);
         }
         /* Look for an empty slot (by means of linear probing) where to put
          * the new key-value pair.
@@ -475,7 +471,7 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
                 h_tomb = h;
                 found_tombstone = 1;
             }
-            h = (h+1) % ht->capacity;
+            h = (h + 1) % ht->capacity;
         }
         if (ht->slots[h].key == NULL)
         {
