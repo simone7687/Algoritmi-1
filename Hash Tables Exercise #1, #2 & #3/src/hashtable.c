@@ -680,7 +680,7 @@ void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit
                 node = ht->slots[i].head;
                 while (node != NULL)
                 {
-                    visit(node->key, node->value, visit_arg);
+                    visit(node->key, node->value, visit_context);
                     node = node->next;
                 }
             }
