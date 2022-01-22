@@ -514,19 +514,20 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
  */
 void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
 {
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        int key_hash = (int)ht->key_hash(key, ht->capacity);
-        while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
-        {
-            key_hash = (key_hash + 1) % ht->capacity;
-        }
-        if (ht->slots[key_hash].key != NULL)
-        {
-            return ht->slots[key_hash].value;
-        }
+        return NULL;
     }
-    return NULL;
+
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
+    while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
+    {
+        key_hash = (key_hash + 1) % ht->capacity;
+    }
+    if (ht->slots[key_hash].key != NULL)
+    {
+        return ht->slots[key_hash].value;
+    }
 }
 
 /**
@@ -670,28 +671,29 @@ void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
 upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
 {
     upo_ht_key_list_t list = NULL;
-    if (!upo_ht_sepchain_is_empty(ht))
+    if (upo_ht_sepchain_is_empty(ht))
     {
-        size_t i = 0;
-        for (i = 0; i < ht->capacity; ++i)
+        return list;
+    }
+
+    size_t i = 0;
+    for (i = 0; i < ht->capacity; ++i)
+    {
+        upo_ht_sepchain_list_node_t *node = NULL;
+        for (node = ht->slots[i].head; node != NULL; node = node->next)
         {
-            upo_ht_sepchain_list_node_t *node = NULL;
-            for (node = ht->slots[i].head; node != NULL; node = node->next)
+            upo_ht_key_list_node_t *list_node = NULL;
+            list_node = malloc(sizeof(struct upo_ht_key_list_node_s));
+            if (list_node == NULL)
             {
-                upo_ht_key_list_node_t *list_node = NULL;
-                list_node = malloc(sizeof(struct upo_ht_key_list_node_s));
-                if (list_node == NULL)
-                {
-                    perror("Unable to allocate memory for a new node of the key list");
-                    abort();
-                }
-                list_node->key = node->key;
-                list_node->next = list;
-                list = list_node;
+                perror("Unable to allocate memory for a new node of the key list");
+                abort();
             }
+            list_node->key = node->key;
+            list_node->next = list;
+            list = list_node;
         }
     }
-    return list;
 }
 
 /**
@@ -699,20 +701,24 @@ upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
  */
 void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit, void *visit_context)
 {
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        size_t i = 0;
-        upo_ht_sepchain_list_node_t *node = NULL;
-        for (i = 0; i < ht->capacity; i++)
-            if (ht->slots[i].head != NULL)
+        return;
+    }
+
+    size_t i = 0;
+    upo_ht_sepchain_list_node_t *node = NULL;
+    for (i = 0; i < ht->capacity; i++)
+    {
+        if (ht->slots[i].head != NULL)
+        {
+            node = ht->slots[i].head;
+            while (node != NULL)
             {
-                node = ht->slots[i].head;
-                while (node != NULL)
-                {
-                    visit(node->key, node->value, visit_context);
-                    node = node->next;
-                }
+                visit(node->key, node->value, visit_context);
+                node = node->next;
             }
+        }
     }
 }
 
@@ -723,31 +729,34 @@ void upo_ht_sepchain_traverse(const upo_ht_sepchain_t ht, upo_ht_visitor_t visit
  */
 upo_ht_key_list_t upo_ht_linprob_keys(const upo_ht_linprob_t ht)
 {
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        upo_ht_key_list_t list = NULL, temp = NULL;
-        size_t i = 0;
-        for (i = 0; i < ht->capacity; i++)
-            if (ht->slots[i].key != NULL && !ht->slots[i].tombstone)
-            {
-                if (list == NULL)
-                {
-                    list = malloc(sizeof(upo_ht_key_list_node_t));
-                    list->key = ht->slots[i].key;
-                    list->next = NULL;
-                    temp = list;
-                }
-                else
-                {
-                    temp->next = malloc(sizeof(upo_ht_key_list_node_t));
-                    temp = temp->next;
-                    temp->key = ht->slots[i].key;
-                    temp->next = NULL;
-                }
-            }
-        return list;
+        return NULL;
     }
-    return NULL;
+
+    upo_ht_key_list_t list = NULL, temp = NULL;
+    size_t i = 0;
+    for (i = 0; i < ht->capacity; i++)
+    {
+        if (ht->slots[i].key != NULL && !ht->slots[i].tombstone)
+        {
+            if (list == NULL)
+            {
+                list = malloc(sizeof(upo_ht_key_list_node_t));
+                list->key = ht->slots[i].key;
+                list->next = NULL;
+                temp = list;
+            }
+            else
+            {
+                temp->next = malloc(sizeof(upo_ht_key_list_node_t));
+                temp = temp->next;
+                temp->key = ht->slots[i].key;
+                temp->next = NULL;
+            }
+        }
+    }
+    return list;
 }
 
 /**
