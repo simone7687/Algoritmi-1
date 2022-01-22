@@ -272,3 +272,6 @@ Stack Exercise - Abstract Data Types/bin/Makefile
 Stack Exercise - Abstract Data Types/test/test_timer.c
 Stack Exercise - Abstract Data Types/apps/use_timer.c
 Stack Exercise - Abstract Data Types/apps/Makefile
+Stack Exercise - Abstract Data Types/test/test_hires_timer
+Stack Exercise - Abstract Data Types/test/test_stack
+Stack Exercise - Abstract Data Types/test/test_timer
