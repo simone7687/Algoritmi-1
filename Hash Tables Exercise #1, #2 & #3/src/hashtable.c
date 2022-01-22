@@ -91,34 +91,36 @@ void upo_ht_sepchain_destroy(upo_ht_sepchain_t ht, int destroy_data)
 
 void upo_ht_sepchain_clear(upo_ht_sepchain_t ht, int destroy_data)
 {
-    if (ht != NULL && ht->slots != NULL)
+    if (ht == NULL || ht->slots == NULL)
     {
-        size_t i = 0;
-
-        /* For each slot, clear the associated list of collisions */
-        for (i = 0; i < ht->capacity; ++i)
-        {
-            upo_ht_sepchain_list_node_t *list = NULL;
-
-            list = ht->slots[i].head;
-            while (list != NULL)
-            {
-                upo_ht_sepchain_list_node_t *node = list;
-
-                list = list->next;
-
-                if (destroy_data)
-                {
-                    free(node->key);
-                    free(node->value);
-                }
-
-                free(node);
-            }
-            ht->slots[i].head = NULL;
-        }
-        ht->size = 0;
+        return;
     }
+
+    size_t i = 0;
+
+    /* For each slot, clear the associated list of collisions */
+    for (i = 0; i < ht->capacity; ++i)
+    {
+        upo_ht_sepchain_list_node_t *list = NULL;
+
+        list = ht->slots[i].head;
+        while (list != NULL)
+        {
+            upo_ht_sepchain_list_node_t *node = list;
+
+            list = list->next;
+
+            if (destroy_data)
+            {
+                free(node->key);
+                free(node->value);
+            }
+
+            free(node);
+        }
+        ht->slots[i].head = NULL;
+    }
+    ht->size = 0;
 }
 
 /**
@@ -144,30 +146,30 @@ upo_ht_sepchain_list_node_t *upo_ht_sepchain_list_node_create(void *k, void *v)
 
 void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 {
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        void *old_value = NULL;
-        int key_hash = (int)ht->key_hash(key, ht->capacity);
-        upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
-
-        while ((node != NULL) && (ht->key_cmp(key, node->key) != 0))
-            node = node->next;
-
-        if (node == NULL)
-        {
-            node = upo_ht_sepchain_list_node_create(key, value);
-            node->next = ht->slots[key_hash].head;
-            ht->slots[key_hash].head = node;
-        }
-        else
-        {
-            old_value = node->value;
-            node->value = value;
-        }
-        return old_value;
+        return NULL;
     }
 
-    return NULL;
+    void *old_value = NULL;
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
+    upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
+
+    while ((node != NULL) && (ht->key_cmp(key, node->key) != 0))
+        node = node->next;
+
+    if (node == NULL)
+    {
+        node = upo_ht_sepchain_list_node_create(key, value);
+        node->next = ht->slots[key_hash].head;
+        ht->slots[key_hash].head = node;
+    }
+    else
+    {
+        old_value = node->value;
+        node->value = value;
+    }
+    return old_value;
 }
 
 /**
@@ -177,29 +179,31 @@ void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
 {
     // se l'hash è valida (è stata inizializzata)
-    if (ht != NULL && ht->slots != NULL)
+    if (ht == NULL || ht->slots == NULL)
     {
-        // calcolo il valore hash ()
-        int key_hash = (int)ht->key_hash(key, ht->capacity);
+        return;
+    }
 
-        // Controllo se esiste un nodo con la chiave == key
-        // quindi faccio un for completo che si blocca solo se
-        // il nodo attuale (node: creato qui sotto)
-        // è uguale a key
-        // se non esiste node sarà == NULL
-        upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
-        while (node != NULL && ht->key_cmp(key, node->key) != 0)
-        {
-            node = node->next;
-        }
-        // se node == NULL
-        // inserisco un nuovo nodo
-        if (node == NULL)
-        {
-            node = upo_ht_sepchain_list_node_create(key, value);
-            node->next = ht->slots[key_hash].head;
-            ht->slots[key_hash].head = node;
-        }
+    // calcolo il valore hash ()
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
+
+    // Controllo se esiste un nodo con la chiave == key
+    // quindi faccio un for completo che si blocca solo se
+    // il nodo attuale (node: creato qui sotto)
+    // è uguale a key
+    // se non esiste node sarà == NULL
+    upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
+    while (node != NULL && ht->key_cmp(key, node->key) != 0)
+    {
+        node = node->next;
+    }
+    // se node == NULL
+    // inserisco un nuovo nodo
+    if (node == NULL)
+    {
+        node = upo_ht_sepchain_list_node_create(key, value);
+        node->next = ht->slots[key_hash].head;
+        ht->slots[key_hash].head = node;
     }
 }
 
@@ -266,29 +270,28 @@ void upo_ht_sepchain_delete(upo_ht_sepchain_t ht, const void *key, int destroy_d
 
 size_t upo_ht_sepchain_size(const upo_ht_sepchain_t ht)
 {
-
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        int i = 0;
-        int c = (int)ht->capacity;
-        size_t count_keys = 0;
-        upo_ht_sepchain_list_node_t *node;
-
-        for (i = 0; i < c; i++)
-        {
-            node = ht->slots[i].head;
-
-            while (node != NULL)
-            {
-                if (node->key != NULL)
-                    count_keys++;
-                node = node->next;
-            }
-        }
-        return count_keys;
+        return 0;
     }
 
-    return 0;
+    int i = 0;
+    int c = (int)ht->capacity;
+    size_t count_keys = 0;
+    upo_ht_sepchain_list_node_t *node;
+
+    for (i = 0; i < c; i++)
+    {
+        node = ht->slots[i].head;
+
+        while (node != NULL)
+        {
+            if (node->key != NULL)
+                count_keys++;
+            node = node->next;
+        }
+    }
+    return count_keys;
 }
 
 int upo_ht_sepchain_is_empty(const upo_ht_sepchain_t ht)
@@ -384,27 +387,29 @@ void upo_ht_linprob_destroy(upo_ht_linprob_t ht, int destroy_data)
 
 void upo_ht_linprob_clear(upo_ht_linprob_t ht, int destroy_data)
 {
-    if (ht != NULL && ht->slots != NULL)
+    if (ht == NULL || ht->slots == NULL)
     {
-        size_t i = 0;
-
-        /* For each slot, clear the associated list of collisions */
-        for (i = 0; i < ht->capacity; ++i)
-        {
-            if (ht->slots[i].key != NULL)
-            {
-                if (destroy_data)
-                {
-                    free(ht->slots[i].key);
-                    free(ht->slots[i].value);
-                }
-                ht->slots[i].key = NULL;
-                ht->slots[i].value = NULL;
-                ht->slots[i].tombstone = 0;
-            }
-        }
-        ht->size = 0;
+        return;
     }
+
+    size_t i = 0;
+
+    /* For each slot, clear the associated list of collisions */
+    for (i = 0; i < ht->capacity; ++i)
+    {
+        if (ht->slots[i].key != NULL)
+        {
+            if (destroy_data)
+            {
+                free(ht->slots[i].key);
+                free(ht->slots[i].value);
+            }
+            ht->slots[i].key = NULL;
+            ht->slots[i].value = NULL;
+            ht->slots[i].tombstone = 0;
+        }
+    }
+    ht->size = 0;
 }
 
 /**
@@ -456,49 +461,52 @@ void* upo_ht_linprob_put(upo_ht_linprob_t ht, void *key, void *value)
  */
 void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
 {
-    if (ht != NULL && ht->slots != NULL)
+    if (ht == NULL || ht->slots == NULL)
     {
-        size_t h = 0;
-        size_t h_tomb = 0;
-        int found_tombstone = 0;
-        /* Double the size if 50% is full */
-        if (upo_ht_linprob_load_factor(ht) >= 0.5)
-        {
-            upo_ht_linprob_resize(ht, 2 * ht->capacity);
-        }
-        /* Look for an empty slot (by means of linear probing) where to put
-         * the new key-value pair.
-         * If, during slot probing, we encounter a tombstone, we cannot stop the
-         * probing (and put the given key-value in that slot) since there can be
-         * a slot after the tombstone that already contains the given key-value.
-         * When we stop the probing at an empty slot we insert the given
-         * key-value pair either in the first tombstone we found (if any) or in
-         * the empty slot when we stopped the probing.
-         */
-        h = ht->key_hash(key, ht->capacity);
-        while ((ht->slots[h].key != NULL && ht->key_cmp(key, ht->slots[h].key) != 0) /*used slot */
-               || ht->slots[h].tombstone != 0)                                       /* tombstone slot */
-        {
-            if (ht->slots[h].tombstone != 0 && !found_tombstone)
-            {
-                h_tomb = h;
-                found_tombstone = 1;
-            }
-            h = (h + 1) % ht->capacity;
-        }
-        if (ht->slots[h].key == NULL)
-        {
-            if (found_tombstone)
-            {
-                h = h_tomb;
-            }
-            ht->slots[h].key = key;
-            ht->slots[h].value = value;
-            ht->slots[h].tombstone = 0;
-            ht->size += 1;
-        }
-        /* else: ignore duplicate */
+        return;
     }
+
+    size_t h = 0;
+    size_t h_tomb = 0;
+    int found_tombstone = 0;
+    /* Double the size if 50% is full */
+    if (upo_ht_linprob_load_factor(ht) >= 0.5)
+    {
+        upo_ht_linprob_resize(ht, 2 * ht->capacity);
+    }
+    /**
+     * Look for an empty slot (by means of linear probing) where to put
+     * the new key-value pair.
+     * If, during slot probing, we encounter a tombstone, we cannot stop the
+     * probing (and put the given key-value in that slot) since there can be
+     * a slot after the tombstone that already contains the given key-value.
+     * When we stop the probing at an empty slot we insert the given
+     * key-value pair either in the first tombstone we found (if any) or in
+     * the empty slot when we stopped the probing.
+     */
+    h = ht->key_hash(key, ht->capacity);
+    while ((ht->slots[h].key != NULL && ht->key_cmp(key, ht->slots[h].key) != 0) /*used slot */
+           || ht->slots[h].tombstone != 0)                                       /* tombstone slot */
+    {
+        if (ht->slots[h].tombstone != 0 && !found_tombstone)
+        {
+            h_tomb = h;
+            found_tombstone = 1;
+        }
+        h = (h + 1) % ht->capacity;
+    }
+    if (ht->slots[h].key == NULL)
+    {
+        if (found_tombstone)
+        {
+            h = h_tomb;
+        }
+        ht->slots[h].key = key;
+        ht->slots[h].value = value;
+        ht->slots[h].tombstone = 0;
+        ht->size += 1;
+    }
+    /* else: ignore duplicate */
 }
 
 /**
@@ -540,29 +548,31 @@ int upo_ht_linprob_contains(const upo_ht_linprob_t ht, const void *key)
  */
 void upo_ht_linprob_delete(upo_ht_linprob_t ht, const void *key, int destroy_data)
 {
-    if (ht != NULL && ht->capacity != 0)
+    if (ht == NULL || ht->capacity == 0)
     {
-        int key_hash = (int)ht->key_hash(key, ht->capacity);
+        return;
+    }
 
-        while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
-            key_hash = (key_hash + 1) % ht->capacity;
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
 
-        if (ht->slots[key_hash].key != NULL)
+    while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
+        key_hash = (key_hash + 1) % ht->capacity;
+
+    if (ht->slots[key_hash].key != NULL)
+    {
+        if (destroy_data)
         {
-            if (destroy_data)
-            {
-                free(ht->slots[key_hash].key);
-                free(ht->slots[key_hash].value);
-            }
-            ht->slots[key_hash].key = NULL;
-            ht->slots[key_hash].value = NULL;
-            ht->slots[key_hash].tombstone = 1;
-            ht->size -= 1;
+            free(ht->slots[key_hash].key);
+            free(ht->slots[key_hash].value);
+        }
+        ht->slots[key_hash].key = NULL;
+        ht->slots[key_hash].value = NULL;
+        ht->slots[key_hash].tombstone = 1;
+        ht->size -= 1;
 
-            if (upo_ht_linprob_load_factor(ht) <= 0.125)
-            {
-                upo_ht_linprob_resize(ht, ht->capacity);
-            }
+        if (upo_ht_linprob_load_factor(ht) <= 0.125)
+        {
+            upo_ht_linprob_resize(ht, ht->capacity);
         }
     }
 }
@@ -595,48 +605,53 @@ void upo_ht_linprob_resize(upo_ht_linprob_t ht, size_t n)
     /* preconditions */
     assert(n > 0);
 
-    if (ht != NULL)
+    if (ht == NULL)
     {
-        /* The hash table must be rebuilt from scratch since the hash value of
-         * keys will be in general different (due to the change in the
-         * capacity). */
-
-        size_t i = 0;
-        upo_ht_linprob_t new_ht = NULL;
-
-        /* Create a new temporary hash table */
-        new_ht = upo_ht_linprob_create(n, ht->key_hash, ht->key_cmp);
-        if (new_ht == NULL)
-        {
-            perror("Unable to allocate memory for slots of the Hash Table with Separate Chaining");
-            abort();
-        }
-
-        /* Put in the temporary hash table the key-value pairs stored in the
-         * hash table to resize.
-         * Note: by calling function 'put' we are also rehashing the keys
-         * according to the new capacity. */
-        for (i = 0; i < ht->capacity; ++i)
-        {
-            if (ht->slots[i].key != NULL)
-            {
-                upo_ht_linprob_put(new_ht, ht->slots[i].key, ht->slots[i].value);
-            }
-        }
-
-        /* Copy the new slots in the old hash table.
-         * To do so we use a trick that avoids to loop for each key-value pair:
-         * swap the array of slots, the size and the capacity between new and
-         * old hash tables.
-         * This way the memory that was allocated for ht is moved to new_ht and
-         * is deallocated when new_ht is destroyed. */
-        upo_swap(&ht->slots, &new_ht->slots, sizeof ht->slots);
-        upo_swap(&ht->capacity, &new_ht->capacity, sizeof ht->capacity);
-        upo_swap(&ht->size, &new_ht->size, sizeof ht->size);
-
-        /* Destroy temporary hash table */
-        upo_ht_linprob_destroy(new_ht, 0);
+        return;
     }
+
+    /**
+     * The hash table must be rebuilt from scratch since the hash value of
+     * keys will be in general different (due to the change in the
+     * capacity). */
+
+    size_t i = 0;
+    upo_ht_linprob_t new_ht = NULL;
+
+    /* Create a new temporary hash table */
+    new_ht = upo_ht_linprob_create(n, ht->key_hash, ht->key_cmp);
+    if (new_ht == NULL)
+    {
+        perror("Unable to allocate memory for slots of the Hash Table with Separate Chaining");
+        abort();
+    }
+
+    /**
+     * Put in the temporary hash table the key-value pairs stored in the
+     * hash table to resize.
+     * Note: by calling function 'put' we are also rehashing the keys
+     * according to the new capacity. */
+    for (i = 0; i < ht->capacity; ++i)
+    {
+        if (ht->slots[i].key != NULL)
+        {
+            upo_ht_linprob_put(new_ht, ht->slots[i].key, ht->slots[i].value);
+        }
+    }
+
+    /**
+     *  Copy the new slots in the old hash table.
+     * To do so we use a trick that avoids to loop for each key-value pair:
+     * swap the array of slots, the size and the capacity between new and
+     * old hash tables.
+     * This way the memory that was allocated for ht is moved to new_ht and
+     * is deallocated when new_ht is destroyed. */
+    upo_swap(&ht->slots, &new_ht->slots, sizeof ht->slots);
+    upo_swap(&ht->capacity, &new_ht->capacity, sizeof ht->capacity);
+    upo_swap(&ht->size, &new_ht->size, sizeof ht->size);
+
+    /* Destroy temporary hash table */
+    upo_ht_linprob_destroy(new_ht, 0);
 }
 
 /*** EXERCISE #2 - END of HASH TABLE with LINEAR PROBING ***/
