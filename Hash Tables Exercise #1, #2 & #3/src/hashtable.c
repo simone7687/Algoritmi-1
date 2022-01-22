@@ -148,21 +148,21 @@ void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
     {
         void *old_value = NULL;
         int key_hash = (int)ht->key_hash(key, ht->capacity);
-        upo_ht_sepchain_list_node_t *n = ht->slots[key_hash].head;
+        upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
 
-        while ((n != NULL) && (ht->key_cmp(key, n->key) != 0))
-            n = n->next;
+        while ((node != NULL) && (ht->key_cmp(key, node->key) != 0))
+            node = node->next;
 
-        if (n == NULL)
+        if (node == NULL)
         {
-            n = upo_ht_sepchain_list_node_create(key, value);
-            n->next = ht->slots[key_hash].head;
-            ht->slots[key_hash].head = n;
+            node = upo_ht_sepchain_list_node_create(key, value);
+            node->next = ht->slots[key_hash].head;
+            ht->slots[key_hash].head = node;
         }
         else
         {
-            old_value = n->value;
-            n->value = value;
+            old_value = node->value;
+            node->value = value;
         }
         return old_value;
     }
@@ -208,13 +208,13 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
  */
 void* upo_ht_sepchain_get(const upo_ht_sepchain_t ht, const void *key)
 {
-    size_t h=ht->key_hash(key,ht->capacity);
+    size_t h = ht->key_hash(key, ht->capacity);
     upo_ht_sepchain_list_node_t *node = ht->slots[h].head;
-    while(node!=NULL && ht->key_cmp(key,node->key)!=0)
+    while (node != NULL && ht->key_cmp(key, node->key) != 0)
     {
-        node=node->next;
+        node = node->next;
     }
-    if(node!=NULL)
+    if (node != NULL)
         return node->value;
     else
         return NULL;
@@ -315,7 +315,6 @@ upo_ht_hasher_t upo_ht_sepchain_get_hasher(const upo_ht_sepchain_t ht)
 {
     return ht->key_hash;
 }
-
 
 /*** EXERCISE #1 - END of HASH TABLE with SEPARATE CHAINING ***/
 
@@ -478,7 +477,7 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
          */
         h = ht->key_hash(key, ht->capacity);
         while ((ht->slots[h].key != NULL && ht->key_cmp(key, ht->slots[h].key) != 0) /*used slot */
-               || ht->slots[h].tombstone != 0) /* tombstone slot */
+               || ht->slots[h].tombstone != 0)                                       /* tombstone slot */
         {
             if (ht->slots[h].tombstone != 0 && !found_tombstone)
             {
@@ -507,15 +506,19 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
  */
 void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
 {
-    size_t h=ht->key_hash(key,ht->capacity);
-    while((ht->slots[h].key!=NULL && ht->key_cmp(key,ht->slots[h].key)!=0)||ht->slots[h].tombstone==1)
+    if (ht != NULL)
     {
-        h=(h+1) % ht->capacity;
+        int key_hash = (int)ht->key_hash(key, ht->capacity);
+        while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
+        {
+            key_hash = (key_hash + 1) % ht->capacity;
+        }
+        if (ht->slots[key_hash].key != NULL)
+        {
+            return ht->slots[key_hash].value;
+        }
     }
-    if(ht->slots[h].key!=NULL)
-        return ht->slots[h].value;
-    else
-        return NULL;
+    return NULL;
 }
 
 /**
@@ -537,26 +540,29 @@ int upo_ht_linprob_contains(const upo_ht_linprob_t ht, const void *key)
  */
 void upo_ht_linprob_delete(upo_ht_linprob_t ht, const void *key, int destroy_data)
 {
-    size_t h=ht->key_hash(key,ht->capacity);
-    while((ht->slots[h].key!=NULL && ht->key_cmp(key,ht->slots[h].key)!=0) || ht->slots[h].tombstone!=0)
+    if (ht != NULL && ht->capacity != 0)
     {
-        h=(h+1)% ht->capacity; 
-    }
-    if(ht->slots[h].key!=NULL)
-    {
-        if(destroy_data)
-        {
-            free(ht->slots[h].key);
-            free(ht->slots[h].value);
-        }
-        ht->slots[h].key=NULL;
-        ht->slots[h].value=NULL;
-        ht->slots[h].tombstone=1;
-        ht->size-=1;
+        int key_hash = (int)ht->key_hash(key, ht->capacity);
 
-        if(upo_ht_linprob_load_factor(ht)<=0.125)
+        while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
+            key_hash = (key_hash + 1) % ht->capacity;
+
+        if (ht->slots[key_hash].key != NULL)
         {
-            upo_ht_linprob_resize(ht,ht->capacity);
+            if (destroy_data)
+            {
+                free(ht->slots[key_hash].key);
+                free(ht->slots[key_hash].value);
+            }
+            ht->slots[key_hash].key = NULL;
+            ht->slots[key_hash].value = NULL;
+            ht->slots[key_hash].tombstone = 1;
+            ht->size -= 1;
+
+            if (upo_ht_linprob_load_factor(ht) <= 0.125)
+            {
+                upo_ht_linprob_resize(ht, ht->capacity);
+            }
         }
     }
 }
