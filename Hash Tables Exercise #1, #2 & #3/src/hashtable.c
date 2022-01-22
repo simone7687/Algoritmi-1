@@ -125,36 +125,49 @@ void upo_ht_sepchain_clear(upo_ht_sepchain_t ht, int destroy_data)
  * Inserisce una nuova coppia key value solo se non esiste gia un un valore key
  * TODO: Qual'è la differenza con upo_ht_sepchain_insert()
  */
+upo_ht_sepchain_list_node_t *upo_ht_sepchain_list_node_create(void *k, void *v)
+{
+    upo_ht_sepchain_list_node_t *node;
+    node = malloc(sizeof(struct upo_ht_sepchain_list_node_s));
+
+    if (node == NULL)
+    {
+        perror("Errore nella creazione del nodo");
+        abort();
+    }
+
+    node->key = k;
+    node->value = v;
+
+    return node;
+}
+
 void* upo_ht_sepchain_put(upo_ht_sepchain_t ht, void *key, void *value)
 {
-    void *old_value = NULL;
+    if (ht != NULL)
+    {
+        void *old_value = NULL;
+        int key_hash = (int)ht->key_hash(key, ht->capacity);
+        upo_ht_sepchain_list_node_t *n = ht->slots[key_hash].head;
 
-    size_t h=ht->key_hash(key,ht->capacity);
-    upo_ht_sepchain_list_node_t *n= ht->slots[h].head;
-    while(n!=NULL && ht->key_cmp(key,n->key)!=0)
-    {
-        n=n->next;
-    }
-    if(n==NULL)
-    {
-        n=malloc(sizeof( upo_ht_sepchain_list_node_t));
-        if(n==NULL)
+        while ((n != NULL) && (ht->key_cmp(key, n->key) != 0))
+            n = n->next;
+
+        if (n == NULL)
         {
-            perror("Errore nella creazione del nodo");
-            abort();
+            n = upo_ht_sepchain_list_node_create(key, value);
+            n->next = ht->slots[key_hash].head;
+            ht->slots[key_hash].head = n;
         }
-        n->key=key;
-        n->value=value;
-        n->next=ht->slots[h].head;
-        ht->slots[h].head=n;
-        ht->size += 1;  
+        else
+        {
+            old_value = n->value;
+            n->value = value;
+        }
+        return old_value;
     }
-    else
-    {
-        old_value=n->value;
-        n->value=value;
-    }
-    return old_value;
+
+    return NULL;
 }
 
 /**
@@ -170,7 +183,7 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
         int key_hash = (int)ht->key_hash(key, ht->capacity);
 
         // Controllo se esiste un nodo con la chiave == key
-        // quindi faccio un for completo che si blocca solo se 
+        // quindi faccio un for completo che si blocca solo se
         // il nodo attuale (node: creato qui sotto)
         // è uguale a key
         // se non esiste node sarà == NULL
@@ -186,7 +199,7 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
             node = upo_ht_sepchain_list_node_create(key, value);
             node->next = ht->slots[key_hash].head;
             ht->slots[key_hash].head = node;
-            }
+        }
     }
 }
 
@@ -214,7 +227,7 @@ int upo_ht_sepchain_contains(const upo_ht_sepchain_t ht, const void *key)
 {
     if (upo_ht_sepchain_get(ht, key) != NULL)
         return 1;
-    else 
+    else
         return 0;
 }
 
@@ -465,7 +478,7 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
          */
         h = ht->key_hash(key, ht->capacity);
         while ((ht->slots[h].key != NULL && ht->key_cmp(key, ht->slots[h].key) != 0) /*used slot */
-        || ht->slots[h].tombstone != 0) /* tombstone slot */
+               || ht->slots[h].tombstone != 0) /* tombstone slot */
         {
             if (ht->slots[h].tombstone != 0 && !found_tombstone)
             {
@@ -550,7 +563,7 @@ void upo_ht_linprob_delete(upo_ht_linprob_t ht, const void *key, int destroy_dat
 
 size_t upo_ht_linprob_size(const upo_ht_linprob_t ht)
 {
-    if(ht != NULL)
+    if (ht != NULL)
         return ht->size;
     else
         return 0;
@@ -771,7 +784,7 @@ size_t upo_ht_hash_int_mult_knuth(const void *x, size_t m)
 size_t upo_ht_hash_str(const void *x, size_t h0, size_t a, size_t m)
 {
     const char *s = x;
-    size_t h = h0; 
+    size_t h = h0;
 
     /* preconditions */
     assert(x != NULL);
@@ -795,7 +808,7 @@ size_t upo_ht_hash_str_djb2(const void *x, size_t m)
 size_t upo_ht_hash_str_djb2a(const void *x, size_t m)
 {
     const char *s = x;
-    size_t h = 5381U; 
+    size_t h = 5381U;
 
     /* preconditions */
     assert(x != NULL);
