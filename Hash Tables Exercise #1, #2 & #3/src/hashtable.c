@@ -240,31 +240,38 @@ int upo_ht_sepchain_contains(const upo_ht_sepchain_t ht, const void *key)
  */
 void upo_ht_sepchain_delete(upo_ht_sepchain_t ht, const void *key, int destroy_data)
 {
-    size_t h=ht->key_hash(key,ht->capacity);
-    upo_ht_sepchain_list_node_t *n=ht->slots[h].head;
-    upo_ht_sepchain_list_node_t *p=NULL;
-    while(n!=NULL && ht->key_cmp(key,n->key)!=0)
+    if (ht == NULL)
     {
-        p=malloc(sizeof(upo_ht_sepchain_list_node_t));
-        p=n;
-        n=n->next;
+        return;
     }
-    if(n!=NULL)
+
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
+    upo_ht_sepchain_list_node_t *n = ht->slots[key_hash].head;
+    upo_ht_sepchain_list_node_t *p = NULL;
+
+    while ((n != NULL) && (ht->key_cmp(key, n->key) != 0))
     {
-        if(p==NULL)
+        p = n;
+        n = n->next;
+    }
+
+    if (n != NULL)
+    {
+        if (p == NULL)
         {
-            ht->slots[h].head=n->next;
+            ht->slots[key_hash].head = n->next;
         }
         else
         {
-            p->next=n->next;
+            p->next = n->next;
         }
-        if(destroy_data)
+
+        if (destroy_data)
         {
-            free(n);
+            free(n->value);
+            free(n->key);
         }
-        
-        ht->size-=1;
+        free(n);
     }
 }
 
@@ -418,39 +425,46 @@ void upo_ht_linprob_clear(upo_ht_linprob_t ht, int destroy_data)
  */
 void* upo_ht_linprob_put(upo_ht_linprob_t ht, void *key, void *value)
 {
-    void *old_value = NULL;
-    size_t h_tombstone;
+    if (ht == NULL && ht->capacity == 0)
+    {
+        return NULL;
+    }
 
-    if(upo_ht_linprob_load_factor(ht)>=0.5)
+    void *old_value = NULL;
+    double load_factor = upo_ht_linprob_load_factor(ht);
+    int key_hash = (int)ht->key_hash(key, ht->capacity);
+    int found_tomb = 0;
+    int key_tomb;
+
+    if (load_factor >= 0.5)
     {
-        upo_ht_linprob_resize(ht,2*ht->capacity);
+        upo_ht_linprob_resize(ht, ht->capacity * 2);
     }
-    size_t h=ht->key_hash(key,ht->capacity);
-    int found_tombstone=0;
-    while((ht->slots[h].key!=NULL &&ht->key_cmp(key,ht->slots[h].key)!=0)||ht->slots[h].tombstone==1)
+
+    while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
     {
-        if(ht->slots[h].tombstone!=0 && !found_tombstone)
+        if (ht->slots[key_hash].tombstone && !found_tomb)
         {
-            found_tombstone=1;
-            h_tombstone=h;
+            found_tomb = 1;
+            key_tomb = key_hash;
         }
-        h=(h+1)%ht->capacity;
+        key_hash = (key_hash + 1) % ht->capacity;
     }
-    if(ht->slots[h].key==NULL)
+
+    if (ht->slots[key_hash].key == NULL)
     {
-        if(found_tombstone)
+        if (found_tomb)
         {
-            h=h_tombstone;
+            key_hash = key_tomb;
         }
-        ht->slots[h].key=key;
-        ht->slots[h].value=value;
-        ht->slots[h].tombstone=0;
-        ht->size+=1;
+        ht->slots[key_hash].key = key;
+        ht->slots[key_hash].value = value;
+        ht->slots[key_hash].tombstone = 0;
     }
     else
     {
-        old_value=ht->slots[h].value;
-        ht->slots[h].value=value;
+        old_value = ht->slots[key_hash].value;
+        ht->slots[key_hash].value = value;
     }
     return old_value;
 }
