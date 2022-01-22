@@ -118,9 +118,13 @@ upo_bst_node_t* upo_bst_put_impl (upo_bst_node_t* node , void* key, void* value,
         return node;
     }
     else if (cmp(key, node->key) < 0)
+    {
         node->left = upo_bst_put_impl(node->left, key, value, oldv, cmp);
+    }
     else if (cmp(key, node->key) > 0)
+    {
         node->right = upo_bst_put_impl(node->right, key, value, oldv, cmp);
+    }
     else
     {
         oldv = node->value;
@@ -556,25 +560,27 @@ upo_bst_key_list_t upo_bst_keys(const upo_bst_t tree)
 }
 void upo_bst_keys_impl(const upo_bst_node_t *node, upo_bst_comparator_t key_cmp, upo_bst_key_list_t *list)
 {
-    if (node != NULL)
+    if (node == NULL)
     {
-        // Add keys to the list in-order so as to produce a sorted list
-        // Add keys of the left subtree
-        upo_bst_keys_impl(node->left, key_cmp, list);
-        // Add key of this node
-        upo_bst_key_list_node_t *list_node = NULL;
-        list_node = malloc(sizeof(struct upo_bst_key_list_node_s));
-        if (list_node == NULL)
-        {
-            perror("Unable to allocate memory for a new node of the key list");
-            abort();
-        }
-        list_node->key = node->key;
-        list_node->next = *list;
-        *list = list_node;
-        // Add keys of the right subtree
-        upo_bst_keys_impl(node->right, key_cmp, list);
+        return;
     }
+
+    // Add keys to the list in-order so as to produce a sorted list
+    // Add keys of the left subtree
+    upo_bst_keys_impl(node->left, key_cmp, list);
+    // Add key of this node
+    upo_bst_key_list_node_t *list_node = NULL;
+    list_node = malloc(sizeof(struct upo_bst_key_list_node_s));
+    if (list_node == NULL)
+    {
+        perror("Unable to allocate memory for a new node of the key list");
+        abort();
+    }
+    list_node->key = node->key;
+    list_node->next = *list;
+    *list = list_node;
+    // Add keys of the right subtree
+    upo_bst_keys_impl(node->right, key_cmp, list);
 }
 
 int upo_bst_is_bst_impl(const upo_bst_node_t *node, const void *min_key, const void *max_key, upo_bst_comparator_t key_cmp);
