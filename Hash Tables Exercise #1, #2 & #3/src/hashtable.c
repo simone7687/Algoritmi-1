@@ -167,39 +167,26 @@ void upo_ht_sepchain_insert(upo_ht_sepchain_t ht, void *key, void *value)
     if (ht != NULL && ht->slots != NULL)
     {
         // calcolo il valore hash ()
-        // TODO: Cosa è?
-        size_t h = ht->key_hash(key, ht->capacity);
+        int key_hash = (int)ht->key_hash(key, ht->capacity);
 
         // Controllo se esiste un nodo con la chiave == key
         // quindi faccio un for completo che si blocca solo se 
         // il nodo attuale (node: creato qui sotto)
         // è uguale a key
         // se non esiste node sarà == NULL
-        upo_ht_sepchain_list_node_t *node = NULL;
-        for (node = ht->slots[h].head;
-            node != NULL && ht->key_cmp(key, node->key) != 0;
-            node = node->next)
+        upo_ht_sepchain_list_node_t *node = ht->slots[key_hash].head;
+        while (node != NULL && ht->key_cmp(key, node->key) != 0)
         {
-            ; /* empty */
+            node = node->next;
         }
         // se node == NULL
         // inserisco un nuovo nodo
         if (node == NULL)
         {
-            /* Key not found -> Add a new node to the head of the list*/
-            node = malloc(sizeof(upo_ht_sepchain_list_node_t));
-            if (node == NULL)
-            {
-                perror("Unable to allocate memory for a node of the list of collisions");
-                abort();
+            node = upo_ht_sepchain_list_node_create(key, value);
+            node->next = ht->slots[key_hash].head;
+            ht->slots[key_hash].head = node;
             }
-            node->key = key;
-            node->value = value;
-            node->next = ht->slots[h].head;
-            ht->slots[h].head = node;
-            ht->size += 1;
-        }
-        // se node != NULL allora nulla
     }
 }
 
@@ -225,13 +212,7 @@ void* upo_ht_sepchain_get(const upo_ht_sepchain_t ht, const void *key)
  */
 int upo_ht_sepchain_contains(const upo_ht_sepchain_t ht, const void *key)
 {
-    size_t h= ht->key_hash(key,ht->capacity);
-    upo_ht_sepchain_list_node_t *n= ht->slots[h].head;
-    while((n!=NULL)&&(ht->key_cmp(key,n->key)!=0))
-    {
-        n=n->next;
-    }
-    if(n!=NULL)
+    if (upo_ht_sepchain_get(ht, key) != NULL)
         return 1;
     else 
         return 0;
@@ -272,8 +253,28 @@ void upo_ht_sepchain_delete(upo_ht_sepchain_t ht, const void *key, int destroy_d
 
 size_t upo_ht_sepchain_size(const upo_ht_sepchain_t ht)
 {
-    if (ht != NULL && ht->size != NULL)
-        return ht->size;
+
+    if (ht != NULL)
+    {
+        int i = 0;
+        int c = (int)ht->capacity;
+        size_t count_keys = 0;
+        upo_ht_sepchain_list_node_t *node;
+
+        for (i = 0; i < c; i++)
+        {
+            node = ht->slots[i].head;
+
+            while (node != NULL)
+            {
+                if (node->key != NULL)
+                    count_keys++;
+                node = node->next;
+            }
+        }
+        return count_keys;
+    }
+
     return 0;
 }
 
@@ -509,18 +510,12 @@ void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
  */
 int upo_ht_linprob_contains(const upo_ht_linprob_t ht, const void *key)
 {
-    size_t h=ht->key_hash(key,ht->capacity);
-    while((ht->slots[h].key!=NULL && ht->key_cmp(key,ht->slots[h].key)!=0)||ht->slots[h].tombstone!=0)
+    if (ht != NULL)
     {
-        h=(h+1) %ht->capacity;
-    }
-    if(ht->slots[h].key!=NULL)
-    {
-        if(ht->key_cmp(key,ht->slots[h].key)==0)
+        if (upo_ht_linprob_get(ht, key))
             return 1;
-        else
-            return 0;
     }
+
     return 0;
 }
 
