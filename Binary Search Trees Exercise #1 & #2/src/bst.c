@@ -455,71 +455,79 @@ void* upo_bst_floor(const upo_bst_t tree, const void *key)
 }
 const upo_bst_node_t* upo_bst_floor_impl(const upo_bst_node_t *node, const void *key, upo_bst_comparator_t key_cmp)
 {
-    if (node != NULL)
+    if (node == NULL)
     {
-        int cmp = key_cmp(key, node->key);
-        // non lo abbiamo trovato
-        // allora verso left
-        if (cmp < 0)
-        {
-            /* The key at current node is greater than the given key.
-            * Search in the left subtree if there is a smaller key that is
-            * also less than the given key. */
-            return upo_bst_floor_impl(node->left, key, key_cmp);
-        }
-        // lo abbiamo trovato, ma prtebbe esserci una soluzione migliore
-        else if (cmp > 0)
-        {
-            /* The key at current node is lower than the given key.
-            * Search in the right subtree if there is a larger key that is
-            * still smaller than the given key. */
-            const upo_bst_node_t *floor_node = NULL;
-            floor_node = upo_bst_floor_impl(node->right, key, key_cmp);
-            return (floor_node != NULL) ? floor_node : node;
-        }
-        // trovato
-        else
-        {
-            return node;
-        }
+        return NULL;
     }
-    return NULL;
+
+    int cmp = key_cmp(key, node->key);
+    // non lo abbiamo trovato
+    // allora verso left
+    if (cmp < 0)
+    {
+        /**
+         * The key at current node is greater than the given key.
+         * Search in the left subtree if there is a smaller key that is
+         * also less than the given key.
+         */
+        return upo_bst_floor_impl(node->left, key, key_cmp);
+    }
+    // lo abbiamo trovato, ma prtebbe esserci una soluzione migliore
+    else if (cmp > 0)
+    {
+        /**
+         * The key at current node is lower than the given key.
+         * Search in the right subtree if there is a larger key that is
+         * still smaller than the given key.
+         */
+        const upo_bst_node_t *floor_node = NULL;
+        floor_node = upo_bst_floor_impl(node->right, key, key_cmp);
+        return (floor_node != NULL) ? floor_node : node;
+    }
+    // trovato
+    else
+    {
+        return node;
+    }
 }
 
 void* upo_bst_ceiling(const upo_bst_t tree, const void *key)
 {
-    if (tree != NULL)
+    if (tree == NULL)
     {
-        upo_bst_comparator_t cmp = upo_bst_get_comparator(tree);
-        upo_bst_node_t *node = tree->root;
-
-        /* se la radice esisite */
-        if (node != NULL)
-        {
-            upo_bst_node_t *prec = NULL;
-            /* se la chiave è maggiore del massimo dell'albero*/
-            if (cmp(key, upo_bst_max(tree)) > 0)
-                return NULL;
-
-            do
-            {
-                if (prec != NULL && cmp(key, node->key) > 0 && cmp(key, prec->key) < 0)
-                    return prec->key;
-                prec = node;
-
-                if (cmp(key, node->key) > 0)
-                    node = node->right;
-                else if (cmp(key, node->key) < 0)
-                    node = node->left;
-                else
-                    return node->key;
-
-            } while (node != NULL);
-
-            return prec->key;
-        }
+        return NULL;
     }
-    return NULL;
+
+    upo_bst_comparator_t cmp = upo_bst_get_comparator(tree);
+    upo_bst_node_t *node = tree->root;
+
+    /* se la radice esisite */
+    if (node != NULL)
+    {
+        upo_bst_node_t *prec = NULL;
+        /* se la chiave è maggiore del massimo dell'albero*/
+        if (cmp(key, upo_bst_max(tree)) > 0)
+        {
+            return NULL;
+        }
+
+        do
+        {
+            if (prec != NULL && cmp(key, node->key) > 0 && cmp(key, prec->key) < 0)
+                return prec->key;
+            prec = node;
+
+            if (cmp(key, node->key) > 0)
+                node = node->right;
+            else if (cmp(key, node->key) < 0)
+                node = node->left;
+            else
+                return node->key;
+
+        } while (node != NULL);
+
+        return prec->key;
+    }
 }
 
 upo_bst_key_list_t upo_bst_keys_range(const upo_bst_t tree, const void *low_key, const void *high_key)
