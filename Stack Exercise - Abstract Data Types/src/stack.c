@@ -146,7 +146,7 @@ size_t upo_stack_size(const upo_stack_t stack)
     // Implementazione
     if (upo_stack_is_empty(stack))
     {
-        return NULL;
+        return 0;
     }
     return stack->size;
 }
