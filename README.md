@@ -56,15 +56,15 @@ make clean test
 valgrind --tool=memcheck --leak-check=full ./test/test_bst
 ```
 #### EX 2
-- [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L304) (Non implemantata)
-- [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L312) (Non implemantata)
-- [Delete min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L320) (Non implemantata)
-- [Delete max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L328) (Non implemantata)
-- [Floor](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L336)
-- [Ceiling](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L388) (Non implemantata)
-- [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L396) (Non implemantata)
-- [Keys](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L404)
-- [Is bst](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L443)
+- [Min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L409)
+- [Max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L424)
+- [Delete min](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L439)
+- [Delete max](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L473)
+- [Floor](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L512) & [Floor impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L525)
+- [Ceiling](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L563)
+- [Keys range](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L605) & [Traverse impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L611)
+- [Keys](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L640) & [Traverse impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L651)
+- [Is bst](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L717) & [Traverse impl](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232/src/bst.c#L725)
 ```make
 make clean test
 ./test/test_bst_more
