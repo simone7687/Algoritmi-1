@@ -528,20 +528,19 @@ void upo_ht_linprob_insert(upo_ht_linprob_t ht, void *key, void *value)
  */
 void* upo_ht_linprob_get(const upo_ht_linprob_t ht, const void *key)
 {
-    if (ht == NULL)
+    if (ht != NULL)
     {
-        return NULL;
+        int key_hash = (int)ht->key_hash(key, ht->capacity);
+        while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
+        {
+            key_hash = (key_hash + 1) % ht->capacity;
+        }
+        if (ht->slots[key_hash].key != NULL)
+        {
+            return ht->slots[key_hash].value;
+        }
     }
-
-    int key_hash = (int)ht->key_hash(key, ht->capacity);
-    while ((ht->slots[key_hash].key != NULL && key != ht->slots[key_hash].key) || ht->slots[key_hash].tombstone)
-    {
-        key_hash = (key_hash + 1) % ht->capacity;
-    }
-    if (ht->slots[key_hash].key != NULL)
-    {
-        return ht->slots[key_hash].value;
-    }
+    return NULL;
 }
 
 /**
@@ -708,6 +707,7 @@ upo_ht_key_list_t upo_ht_sepchain_keys(const upo_ht_sepchain_t ht)
             list = list_node;
         }
     }
+    return list;
 }
 
 /**
