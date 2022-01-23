@@ -6,11 +6,11 @@
 #### EX 1
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Stack%20Exercise%20-%20Abstract%20Data%20Types)
 - [Push](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L64)
-- [Pop](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L90)
-- [Top](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L115)
-- [Is empty](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L128)
-- [Size](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L145)
-- [Clear](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L155)
+- [Pop](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L91)
+- [Top](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L116)
+- [Is empty](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L129)
+- [Size](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L146)
+- [Clear](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L156)
 ```make
 make clean test
 ./test/test_stack
