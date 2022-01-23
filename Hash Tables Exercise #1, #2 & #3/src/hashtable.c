@@ -593,10 +593,21 @@ void upo_ht_linprob_delete(upo_ht_linprob_t ht, const void *key, int destroy_dat
 
 size_t upo_ht_linprob_size(const upo_ht_linprob_t ht)
 {
-    if (ht != NULL)
-        return ht->size;
-    else
+    if (ht == NULL)
+    {
         return 0;
+    }
+
+    size_t count = 0;
+    size_t i = 0;
+    for (i = 0; i < ht->capacity; i++)
+    {
+        if (ht->slots[i].tombstone == 0 && ht->slots[i].key != NULL)
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 int upo_ht_linprob_is_empty(const upo_ht_linprob_t ht)
