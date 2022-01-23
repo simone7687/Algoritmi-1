@@ -4,13 +4,13 @@
 
 ### Stack
 #### EX 1
-Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise)
-- [Push](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L64)
-- [Pop](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L90)
-- [Top](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L115)
-- [Is empty](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L128)
-- [Size](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L145)
-- [Clear](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c#L155)
+Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 1](/Stack%20Exercise%20-%20Abstract%20Data%20Types)
+- [Push](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L64)
+- [Pop](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L90)
+- [Top](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L115)
+- [Is empty](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L128)
+- [Size](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L145)
+- [Clear](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c#L155)
 ```make
 make clean test
 ./test/test_stack
@@ -18,11 +18,11 @@ make clean test
 valgrind --tool=memcheck --leak-check=full ./test/test_stack
 ```
 ##### File
-[Open stack.c](/Abstract%20Data%20Types%201%20-%20Stack%20Exercise/src/stack.c)
+[Open stack.c](/Stack%20Exercise%20-%20Abstract%20Data%20Types/src/stack.c)
 #### EX 2
-Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 2](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise)
-- [Eval postfix](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L91)
-- [Eval lines](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c#L186)
+Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Stack 2](/Stack%20Exercise%20-%20Abstract%20Data%20Types)
+- [Eval postfix](/Stack%20Exercise%20-%20Abstract%20Data%20Types/apps/postfix_eval.c#L91)
+- [Eval lines](/Stack%20Exercise%20-%20Abstract%20Data%20Types/apps/postfix_eval.c#L186)
 ```make
 make clean apps
 ./apps/postfix_eval
@@ -31,7 +31,7 @@ make clean apps
 valgrind --tool=memcheck --leak-check=full ./apps/postfix_eval -f data/postfix.txt
 ```
 ##### File
-[Open postfix_eval.c](/Abstract%20Data%20Types%202%20-%20Stack%20Exercise/apps/postfix_eval.c)
+[Open postfix_eval.c](/Stack%20Exercise%20-%20Abstract%20Data%20Types/apps/postfix_eval.c)
 
 ### Binary Search Trees
 Copiare [ToolKit](/Algo1%20Core%20ToolKit) nella cartella del [Trees](/Binary%20Search%20Trees%20Exercise%20%231%20%26%20%232)
